@@ -1,0 +1,44 @@
+<div class="container" style="padding-top:20px;">
+    
+    
+    <div style="width:auto; float: left;">
+        <h1>Reserved for Manager Submissions!</h1><br><br><br><br><br>
+        <div class="panel panel-default ">
+            
+            <table class="table table-striped text-center" style="width:900px;">
+                <tr>
+                    <th class="text-center" Style="width:auto;">Edit
+                    </th>
+                    <th class="text-center" Style="width:auto;">Employee Name
+                    </th>
+                    <th class="text-center" Style="width:auto;">Achievement Type
+                    </th>
+                    <th Style="width:auto;" class="text-center">Label
+                    </th>
+                    <th class="text-center" Style="width:auto;">Date
+                    </th>
+                </tr>
+                <tr ng-repeat="subms in employeeSubmissions | orderBy:'date':true">
+                    <td><a id="{{subms.id}}" onclick="showAchievements(this.id)"><span class="glyphicon glyphicon-edit"></span>  </a></td>
+                    <td>{{subms.name}}</td>
+                    <td>{{subms.type}}</td>
+                    <td>{{subms.label}}</td>
+                    <td>{{subms.date}}</td>
+                    
+                  
+                    
+                </tr>
+            </table>
+            
+          
+            
+        </div>
+        
+         <div id="resultDiv" ng-model="editResult"> </div>
+        
+        <a href="#/submit" class="btn btn-primary" style="margin-bottom: 30px;" value="Submit">Submit Changes</a>
+    </div>
+    
+    
+    
+</div>

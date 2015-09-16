@@ -1,0 +1,7 @@
+[
+{"email":"m@ibm.com","password":"123","name":"Kareem El Azhary","employeeType":"manager"},
+{"email":"e@ibm.com","password":"123","name":"Ahmed Gareer","employeeType":"employee"},
+{"email":"e2@yahoo.com","password":"123","name":"Mohamed Kassim","employeeType":"employee"},
+{"email":"e3@yahoo.com","password":"123","name":"Hala Aziz","employeeType":"employee"},
+{"email":"e4@yahoo.com","password":"123","name":"Rehab Abdel-Hafeez","employeeType":"employee"}	
+]

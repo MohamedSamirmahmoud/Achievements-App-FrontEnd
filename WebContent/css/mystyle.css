@@ -1,0 +1,44 @@
+.no-margin
+{
+	margin:0px;
+}
+.no-padding
+{
+	padding:0px;
+}
+.ibm-logo
+{
+
+	margin:-18px;
+}
+
+.login-form
+{
+	margin-top:60px;
+
+}
+.img-responsive {
+display: block;
+float: left;
+max-width: 100%;
+height: 87px;
+margin-top: 18px;
+}
+/*
+.login-border
+{
+  width: 500px;
+  height: 370px;
+  border:1px solid #66afe9;
+  background-color:#e8e8e8;
+  border-radius:20px;
+  padding: 75px;
+}
+
+.login-text{
+
+	margin-top:-30px;
+	padding-bottom:20px;
+	font-size:40px0px;
+	
+}*/	

@@ -1,0 +1,68 @@
+<div class="page-header no-margin no-padding">
+		<div class="container" style="height: 120px;">
+                    <img src="images/ibm-Black.jpg" class="img-responsive" width="150">
+                </div>
+</div>
+		<nav class="navbar navbar-inverse navbar-static-top no-margin" >
+                    <div class="container">	
+                        <div class="navbar-header" style="width: 100%;">
+                                <a class="navbar-brand" id="navTitle" style="border-right: 1px solid white;"> IBM - Achievements <span class="glyphicon glyphicon-globe"> </span>  </a>
+                                  
+                        </div>
+                    </div>        
+		</nav>	
+
+<div class="jumbotron">
+		<div class="row login-form">
+			
+		<div class="container">
+			 <div class="col-md-8 col-md-offset-2">
+			<span ng-show="loginForm.LoginInfo.$invalid">
+            <span ng-show="loginForm.LoginInfo.$error.required">
+		    <div class="alert alert-warning" role="alert">
+			<p class="single"> 
+			<span class="glyphicon glyphicon-info-sign"></span> <strong>Please </strong>enter your email and password.</p>  
+			</div>
+			
+			</span>
+			</span>
+			
+			</div>
+			
+			
+			
+			
+			
+			
+			<div class="col-md-4 col-md-offset-4 login-border">
+			
+					<form name="loginForm" ng-submit="loginSubmit();">
+					<!-- <h1 class="text-center login-text">Welcome</h1> -->
+					
+						<div class="input-group">
+						<span class="input-group-addon glyphicon glyphicon-user" ></span>
+						<input type="email" name="LoginInfo" class="form-control" ng-model="Email"  placeholder="Email"  required>  
+						
+						<!--
+						<span style="color:red" ng-show="loginForm.user.$invalid">
+                            <span ng-show="loginForm.user.$error.required">Username is required.</span>
+							-->
+						</div>
+						<br>
+						
+						<div class="input-group">
+						<span class="input-group-addon glyphicon glyphicon-lock" ></span>
+						<input  name="LoginInfo" type="password" class="form-control" ng-model="Password" placeholder="Password" required>
+						</div> 
+						<br><br>
+						
+						 
+						<input type="submit"  class="btn btn-primary" style="width:350px;" value="Login"> 
+						 
+						 
+					
+					</form>
+			</div>
+		</div>
+		</div>
+		</div>

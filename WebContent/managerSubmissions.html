@@ -1,0 +1,64 @@
+<div class="page-header no-margin no-padding">
+		<div class="container" style="height: 120px;">
+                    <img src="images/ibm-Black.jpg" class="img-responsive" width="150">
+             <br><h3 style="float:right;">Welcome, {{username}} &nbsp;&nbsp;<a href="#/home" class="btn btn-primary"><span class="glyphicon glyphicon-log-out"></span> Log out</a></h3>
+                </div>
+</div>
+		<nav class="navbar navbar-inverse navbar-static-top no-margin" >
+                    <div class="container">	
+                        <div class="navbar-header" style="width: 100%;">
+                                <a class="navbar-brand" id="navTitle" style="border-right: 1px solid white;"> IBM - Achievements <span class="glyphicon glyphicon-globe"> </span>  </a>
+                                  
+                            <a href="#/managerMyRequests" class="navbar-brand" style="float: right; margin-right: 8px;" >My Requests</a>
+                            <a href="#/managerSubmissions" class="navbar-brand" style="float: right;  margin-right: 8px;" >Submissions</a>
+                            <a href="#/managerReports" class="navbar-brand" style="float: right; margin-right: 8px;" >Reports</a>
+                        </div>
+                    </div>        
+		</nav>
+<div class="container" style="padding-top:20px;">
+    
+    
+    <div style="width:auto; float: left;">
+        <h1>Reserved for Manager Submissions!</h1><br><br><br><br><br>
+          <div id="resultDiv"></div>
+        <div id="managerFeedback"></div>
+         <div id="submitDiv"></div>
+        <div class="panel panel-default ">
+           
+            
+            <table class="table table-striped text-center" style="width:900px;">
+                <tr>
+                    <th class="text-center" Style="width:auto;">Edit
+                    </th>
+                    <th class="text-center" Style="width:auto;">Employee Name
+                    </th>
+                    <th class="text-center" Style="width:auto;">Achievement Type
+                    </th>
+                    <th Style="width:auto;" class="text-center">Label
+                    </th>
+                    <th class="text-center" Style="width:auto;">Date
+                    </th>
+                </tr>
+                <tr ng-repeat="subms in employeeSubmissions | orderBy:'date':true">
+                    <td><a id="{{subms.id}}" ng-click="showAchievements(subms.id)"><span class="glyphicon glyphicon-edit"></span>  </a></td>
+                    <td>{{subms.name}}</td>
+                    <td>{{subms.type}}</td>
+                    <td>{{subms.label}}</td>
+                    <td>{{subms.date}}</td>
+                    
+                </tr>
+            </table>
+            
+          
+            
+        </div>
+        
+        
+        
+       
+        
+    </div>
+    
+    
+    
+</div>

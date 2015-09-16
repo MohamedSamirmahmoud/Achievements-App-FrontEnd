@@ -1,0 +1,35 @@
+{
+    "Achievements":[
+        {"name": "Disclosure"},
+        {"name": "Board Reviews"},
+        {"name": "Customer Reference"},
+        {"name": "Customer Saves"},
+        {"name": "Feedback to Development"},
+        {"name": "High Impact Asset"},
+        {"name": "Mentorship"},
+        {"name": "Success Stories"},
+        {"name": "Enablement"},
+        {"name": "Certifications & Programs"},
+        {"name": "Revenue Influence"},
+        {"name": "Speaking/Organizing Events"}
+    ],
+    "BusinessUnits": [
+                    {"name": "Analytics"},
+                    {"name":"Cloud"},
+                    {"name":"Commerce"},
+                    {"name":"Healthcare"},
+                    {"name":"Security"},
+                    {"name":"Systems"}
+    ],
+    "Events": [
+        {"name": "Lecture"},
+        {"name":"Seminar"},
+        {"name":"Course"},
+        {"name":"Workshop"},
+        {"name":"On-The-Job-Training"},
+        {"name":"Graduation Project"},
+        {"name":"Conference"}
+    ]
+   
+    
+}
