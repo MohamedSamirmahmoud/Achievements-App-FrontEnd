@@ -59,13 +59,12 @@
           <h4 class="modal-title">List of Employees </h4>
         </div>
         <div class="modal-body">
-          <p>Please select the employee(s) you've worked with :</p>
+          <p>Please select the employee(s) you've worked with: </p>
              
       
-     <div ng-repeat="shared in users | filter:search" for="{{shared.employeeName}}">
-     <input type="checkbox" value="shared.employeeName" name="employeeList[]"/>
-      <label> Male </label>
-  
+     <div ng-repeat="shared in users | filter:search" for="{{shared.employeeMai}}">
+    <input type="checkbox" value="shared.employeeMail" name="employeeList[]"/>
+      {{shared.employeeMail}}
      
     </div>
     

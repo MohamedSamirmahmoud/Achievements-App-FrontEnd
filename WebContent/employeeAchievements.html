@@ -60,21 +60,14 @@
           <p>Please select the employee(s) you've worked with: </p>
              
       
-    <div ng-repeat="shared in users | filter:search" for="{{shared.name}}">
-    <input type="checkbox" value="shared.name" name="employeeList[]"/>
-      {{shared.name}}
-   
- 
-         
-      
-     
+    <div ng-repeat="shared in users | filter:search" for="{{shared.employeeMai}}">
+    <input type="checkbox" value="shared.employeeId" name="employeeList[]"/>
+      {{shared.employeeMail}}
     </div>
-    
-   
           </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-             <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
+           <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
         </div>
       </div>
       

@@ -450,6 +450,11 @@ app.controller ("achievementsController",function ($scope,$http,submissions,Shar
     	json["comment"]  = document.getElementById("comment").value ;
     	json["date"] = document.getElementById("achievementDate").value  ; 
     	json["employeeId"] = Shared.get("employeeId");
+//    	var sharedEmployess = "" ;
+    	for(var i=0 ; i<users.length ; i++){
+    		if(document.getElementsByName("employeeList[]"))
+    	}    
+    	
     	if($scope.myDropDown=='Mentorship'){
     	   if($scope.mentorshipDropDown=='career'){
     		   var  mentorShipCarrer=  document.getElementById("mentorShipCareer") ;
