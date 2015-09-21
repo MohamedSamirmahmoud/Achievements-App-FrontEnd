@@ -504,10 +504,40 @@ app.controller ("achievementsController",function ($scope,$http,submissions,Shar
     		json["brand"]=document.getElementById("customerReferenceBarnd").value;
     		json["busUnit"]=document.getElementById("customerReferenceBusUnit").value;
     		json["engagmentName"]=document.getElementById("customerReferenceEngagementName").value;
-    	}else if($scope.myDropDown=="CertificationsAndPrograms"){
-    		json["type"] = "CertificationsAndPrograms" ;
-    		
-    	}
+    	}else if($scope.myDropDown=='Customer Saves'){
+    		json["type"] = "CustomerSave" ;
+    		json["brand"]=document.getElementById("customerSavesSkillBrand").value;
+    		json['customerName'] = document.getElementById("customerSavesCustomerName").value;
+    		json['country'] = document.getElementById("customerSavesCountry").value;
+    		json['businessUnits'] = document.getElementById("customerSavesBusUnit").value;
+    		json['employeeContribution'] = document.getElementById("customerSavesEmployeeContribution").value;
+    		json['CustomerProblem'] = document.getElementById("customerSavesCustomerProblem").value;
+    		json['engagementName'] = document.getElementById("customerSavesEngagmentName").value;
+    	}else if($scope.myDropDown=='Revenue Influence'){
+    		json["type"] = "RevenueInfluence" ;
+    		 var radioType = document.getElementsByName("revenueInfelunceType") ;
+    		json["revenueInfelunceType"] = radioType[0].checked ? radioType[0].value:(radioType[1].checked?radioType[1].value:radioType[2].value) ;
+    		json["businessUnits"] = document.getElementById("revenueInfluenceBusinessUnits").value;
+    		json["amount"] = document.getElementById("revenueInfluenceAmount").value;
+    		json["descriptionOfContribution"] = document.getElementById("revenueInfluenceAmountDescriptionOfContribution").value;
+    		json["contributionType"] = $scope.ContributionType;
+    		json["customerName"] = document.getElementById("revenueInfluenceCustomerName").value;
+    		json["country"] = document.getElementById("revenueInfluenceCountry").value;
+    		json["engagementName"] = document.getElementById("revenueInfluenceEngagementName").value;
+    		json["brand"] = document.getElementById("revenueInfluenceEngagementName").value;
+    	}else if($scope.myDropDown=='Speaking/Organizing Events'){
+    		json["type"] = "SpeakingOrganizingEvent" ; 
+    		json["titleOfEvent"] =document.getElementById("SpeakingOrganizingTitleOfEvent").value; 
+    		var radioType = document.getElementsByName("SpeakingOrganizingType") ;
+    		json["speakingOrganizingEventsType"] = radioType[0].checked ? radioType[0].value:(radioType[1].checked?radioType[1].value:radioType[2].value) ;
+    		json["country"] =document.getElementById("SpeakingOrganizingCountry").value;
+    		json["businessUnits"] =document.getElementById("SpeakingOrganizingBusinessUnits").value;
+    		json["titleOfConference"] =document.getElementById("SpeakingOrganizingTitleofConference").value;
+    		json["sessions"] =document.getElementById("SpeakingOrganizingSession").value;
+    		var sessionType = document.getElementsByName("SpeakingOrganizingIBM") ;
+    		json["sessionType"] = sessionType[0].checked ? sessionType[0].value: sessionType[1].value;
+    		json["typeOfEvent"] = document.getElementById("SpeakingOrganizingTypeOfEvent").value;
+    	}    		
     	 $http({
  		      method:'POST',
  		      url:'http://localhost:9080/Achievements-App/Services/AchievementManipulation/AddAchievement', 
