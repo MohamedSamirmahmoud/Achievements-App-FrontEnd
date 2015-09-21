@@ -32,7 +32,7 @@
                 </tr>
                 <tr ng-repeat="ReqData in myReqData | orderBy: '-Date'">
                     <td>{{ReqData.achievementType}}</td>
-                    <td>{{ReqData.brand}}</td>
+                    <td>{{ReqData.lobName}}</td>
                     <td>{{ReqData.achievementDate}}</td>
                     
                     <td>
@@ -55,15 +55,13 @@
                             </div>
                         </div> 
                          <div ng-switch on="ReqData.status">
-                            <div ng-switch-when="returned" style="color:blue">
+                            <div ng-switch-when="Returned" style="color:blue">
                                  {{ReqData.status}}
-                                <span class="glyphicon glyphicon-share-alt" style="color:blue"> </span>
+                               <a id="{ReqData.achievementId}" ng-click="showAchievements(ReqData.achievementId)"><span class="glyphicon glyphicon-share-alt" style="color:blue"> </span></a>
                             </div>
                         </div> 
                     </td>
-                    
                 </tr>
-                
             </table>
         </div>
     </div>

@@ -36,7 +36,7 @@
                 </tr>
                 <tr ng-repeat="ReqData in myReqData">
                     <td>{{ReqData.achievementType}}</td>
-                    <td>{{ReqData.brand}}</td>
+                    <td>{{ReqData.lobName}}</td>
                     <td>{{ReqData.achievementDate}}</td>
                     
                     <td>
@@ -58,10 +58,10 @@
                                 <span class="glyphicon glyphicon-remove" style="color:red"></span>
                             </div>
                         </div> 
-                         <div ng-switch on="ReqData.status">
-                            <div ng-switch-when="returned" style="color:blue">
+                        <div ng-switch on="ReqData.status">
+                            <div ng-switch-when="Returned" style="color:blue">
                                  {{ReqData.status}}
-                                <span class="glyphicon glyphicon-share-alt" style="color:blue"> </span>
+                               <a id="{ReqData.achievementId}" ng-click="showAchievements(ReqData.achievementId)"><span class="glyphicon glyphicon-share-alt" style="color:blue"> </span></a>
                             </div>
                         </div> 
                     </td>

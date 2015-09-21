@@ -61,7 +61,7 @@
              
       
     <div ng-repeat="shared in users | filter:search" for="{{shared.employeeMai}}">
-    <input type="checkbox" value="shared.employeeId" name="employeeList[]"/>
+    <input type="checkbox" value="{{shared.employeeId}}" name="employeeList[]"/>
       {{shared.employeeMail}}
     </div>
           </div>

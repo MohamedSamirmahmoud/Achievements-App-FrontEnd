@@ -124,8 +124,7 @@
                 <input id="achievementDate" type="date" class="form-control"><br>
                 Lob Name: 
                 <input id="lobName" type="text" class="form-control"><br>
-                Brand: 
-                <input id="brand" type="text" class="form-control"><br>
+                
             </form>
         </div>
         
@@ -446,9 +445,9 @@
                 <option value="ZW">Zimbabwe</option>
             </select>
             <br>
-            Link to Customer Reference :
+           Brand :
             <br>
-            <input type="text" class="form-control">
+            <input id="customerReferenceBarnd"  type="text" class="form-control">
             <br>
             Business Units :
             <br>
@@ -834,23 +833,13 @@
                <option value="summerInternship">Summer Internship</option>
            </select>
         
-
-        <div ng-show="mentorshipDropDown=='career'">
-            <form>
-                <br>
-                Description:
-                <textarea id="mentorShipCareer" class="form-control"></textarea><br>
-            </form>
-
-        </div>
-		
+  
         <div ng-show="mentorshipDropDown=='certification'">
             <form>
                 <br>
                 Type of Certification:
-                <input type="text" class="form-control"><br>
-                Description:
-                <textarea class="form-control"></textarea><br>
+                <input id="mentorshipCertificationType" type="text" class="form-control"><br>
+            
             </form>
 
         </div>
@@ -858,19 +847,20 @@
             <form>
                 <br>
                 Area:
-                <input type="text" class="form-control"><br>
+                <input id="mentorshipSkillArea" type="text" class="form-control"><br>
                 Duration (in weeks):
-                <input type="number" class="form-control"><br>
-                Description:
-                <textarea class="form-control"></textarea><br>
+                <input id="mentorshipSkillDuration" type="number" class="form-control"><br>
+                Brand:
+                <input id="mentorshipSkillBrand" type="text" class="form-control"><br>
             </form>
 
         </div>
-        <div ng-show="mentorshipDropDown=='summerInternship'">
+       
+               <div>
             <form>
                 <br>
                 Description:
-                <textarea class="form-control"></textarea><br>
+                <textarea id="mentorShipDescription" class="form-control"></textarea><br>
             </form>
         </div>
 		</div>
@@ -1157,7 +1147,7 @@
         <div ng-show="myDropDown=='Enablement'">
             <form class="form-group">
                 Type Of Enablement:
-                    <select  id="enablementType" ng-model="EnablementType" class="form-control">
+                    <select  ng-model="EnablementType" class="form-control">
                         <option selected></option>
                         <option value="Customer">Customer</option>
                         <option value="Partner">Partner</option>
@@ -1183,7 +1173,7 @@
                 <br>
                 <div ng-show="EnablementType=='Customer'">
                     Customer Name: 
-                    <input type="Text" class="form-control" name="ProductName">
+                    <input id="EnablementCustomerName" type="Text" class="form-control" name="ProductName">
                     <br>
                     Customer Type:
                     <select ng-model="CustomerType" class="form-control">
@@ -1195,7 +1185,7 @@
                     <br>
                 </div>
                 Event:
-                <input type="Text" class="form-control" name="Event">
+                <input id="EnablementEvent" type="Text" class="form-control" name="Event">
                 <br>
             </form>
         </div>

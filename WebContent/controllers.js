@@ -85,7 +85,6 @@ app.controller ("achievementsController",function ($scope,$http,submissions,Shar
 {
 	usersFile.getEmployeesInTheSameTeam(Shared.get("employeeId")).success(function(userInfo){
         $scope.users = userInfo;
-        alert(JSON.stringify($scope.users[0].employeeMail)) ;
     });
     
     achievementTypes.success(function(achievements){
@@ -107,8 +106,6 @@ app.controller ("achievementsController",function ($scope,$http,submissions,Shar
    
     
     $scope.username = Shared.get('username');
-    
-    
     
    $scope.showAchievements = function(idValue){
         var result = document.getElementById("resultDiv");
@@ -445,50 +442,40 @@ app.controller ("achievementsController",function ($scope,$http,submissions,Shar
    
     $scope.addAchievement = function(){
     	var json = {} ; 
+    	var len = document.getElementsByName("employeeList[]").length ; 
+    	var employeeList =  document.getElementsByName("employeeList[]") ;
+    	var employees=[] ; 
+    	for(var i=0 ; i<len ; i++){
+    		if(employeeList[i].checked) employess.push(employeeList[i].value)  ;
+    	}    
     	json["lobName"] = document.getElementById("lobName").value ;
-    	json["brand"] = document.getElementById("brand").value  ; 
     	json["comment"]  = document.getElementById("comment").value ;
     	json["date"] = document.getElementById("achievementDate").value  ; 
     	json["employeeId"] = Shared.get("employeeId");
-//    	var sharedEmployess = "" ;
-    	for(var i=0 ; i<users.length ; i++){
-    		if(document.getElementsByName("employeeList[]"))
-    	}    
+    	json["sharedEmployess"] = employees ; 
     	
     	if($scope.myDropDown=='Mentorship'){
+    		json['description'] =  document.getElementById("mentorShipDescription").value ;
+    		json['type'] = "MentorShip" ; 
     	   if($scope.mentorshipDropDown=='career'){
-    		   var  mentorShipCarrer=  document.getElementById("mentorShipCareer") ;
+    		   json['typeOfMentorship'] =  "Career";
+    	   }else if($scope.mentorshipDropDown=='summerInternship'){
+    		   json['typeOfMentorship'] =  "SummerInternship";
+    	   }else if($scope.mentorshipDropDown=='skill'){
+    		   json['typeOfMentorship'] =  "Skill";
+    		   json['area'] = document.getElementById("mentorshipSkillArea").value ;
+    		   json['duration'] = document.getElementById("mentorshipSkillDuration").value ;
+    		   json['brand'] = document.getElementById("mentorshipSkillBrand").value ;
     		   
+    	   }else if($scope.mentorshipDropDown=='certification'){
+    		   json['typeOfMentorship'] = "Certification";
+    		   json['typeOfCertification'] = document.getElementById("mentorshipCertificationType").value ;
     	   }
+    	   
     	}else if ($scope.myDropDown=='Disclosure'){
     		json["title"] = document.getElementById("disclosureTitle").value ; 
     		json["number"]  = document.getElementById("disclosureNumber").value ;  
             json["type"] = "Disclosure" ; 
-            
-            
-            
-    		 $http({
-    		      method:'POST',
-    		      url:'http://localhost:9080/Achievements-App/Services/AchievementManipulation/AddAchievement', 
-    		      params:{achievementJson:JSON.stringify(json)},
-    		      headers:{
-    		          'Content-type':'application/json'
-        }});
-    	} else if($scope.myDropDown=='Customer Reference'){
-    		json["type"] = "CustomerReferences" ; 
-    		json["country"]= document.getElementById("customerReferenceCountry").value;
-    		json["busUnit"]=document.getElementById("customerReferenceBusUnit").value;
-    		json["engagmentName"]=document.getElementById("customerReferenceEngagementName").value;
-    		json["customerName"]=document.getElementById("customerReferenceCustomerName").value
-    		
-
-   		 $http({
-   		      method:'POST',
-   		      url:'http://localhost:9080/Achievements-App/Services/AchievementManipulation/AddAchievement', 
-   		      params:{achievementJson:JSON.stringify(json)},
-   		      headers:{
-   		          'Content-type':'application/json'
-       }});
     	}else if($scope.myDropDown=='Success Stories'){
     		json["type"] = "SuccessStories" ; 
     		json["customerName"]=document.getElementById("successStoriesCustomerName").value;
@@ -497,14 +484,37 @@ app.controller ("achievementsController",function ($scope,$http,submissions,Shar
     		json["busUnit"]=document.getElementById("successStoriesBusinessUnits").value;
     		json["successStoryLink"]=document.getElementById("successStoriesLinkToSuccessStory").value;
     		json["successStoriesType"]=document.getElementById("successStoriesType").value;
-    		 $http({
-      		      method:'POST',
-      		      url:'http://localhost:9080/Achievements-App/Services/AchievementManipulation/AddAchievement', 
-      		      params:{achievementJson:JSON.stringify(json)},
-      		      headers:{
-      		          'Content-type':'application/json'
-          }});
+    		
+    	}else if($scope.myDropDown=='Enablement'){
+    		json["type"] = "Enablement" ;
+    		json["typeOfEnablement"] = $scope.EnablementType ;
+    		json["title"] = document.getElementById("enablementTitle").value;
+    		json["duration"] = document.getElementById("enablementDuration").value;
+    		json["numberOfAttendants"] = document.getElementById("enablementNumberOfAttendees").value;
+    		json["busUnit"] = document.getElementById("enablementBusinessUnits").value;
+    		json["event"] = document.getElementById("EnablementEvent").value;
+    		if($scope.EnablementType=="Customer"){
+    			json["customerName"] =  document.getElementById("EnablementCustomerName").value;
+    			json["customerType"] =  $scope.CustomerType;
+    		}
+    	}else if($scope.myDropDown=="Customer Reference"){
+    		json["type"] = "CustomerReferences" ;
+    		json["customerName"]=document.getElementById("customerReferenceCustomerName").value;
+    		json["country"]=document.getElementById("customerReferenceCountry").value;
+    		json["brand"]=document.getElementById("customerReferenceBarnd").value;
+    		json["busUnit"]=document.getElementById("customerReferenceBusUnit").value;
+    		json["engagmentName"]=document.getElementById("customerReferenceEngagementName").value;
+    	}else if($scope.myDropDown=="CertificationsAndPrograms"){
+    		json["type"] = "CertificationsAndPrograms" ;
+    		
     	}
+    	 $http({
+ 		      method:'POST',
+ 		      url:'http://localhost:9080/Achievements-App/Services/AchievementManipulation/AddAchievement', 
+ 		      params:{achievementJson:JSON.stringify(json)},
+ 		      headers:{
+ 		          'Content-type':'application/json'
+     }});
     };
 	
 	
