@@ -537,7 +537,20 @@ app.controller ("achievementsController",function ($scope,$http,submissions,Shar
     		var sessionType = document.getElementsByName("SpeakingOrganizingIBM") ;
     		json["sessionType"] = sessionType[0].checked ? sessionType[0].value: sessionType[1].value;
     		json["typeOfEvent"] = document.getElementById("SpeakingOrganizingTypeOfEvent").value;
-    	}    		
+    	}else if($scope.myDropDown=='High Impact Asset'){
+    		json["type"] = "HighImpactAsset" ; 
+    		json['typeOfAsset'] = $scope.assetDropDown ;
+    		json["highImpactAssetName"] =document.getElementById("highImpactAssetName").value ;
+    		json["description"] =document.getElementById("highImpactAssetDescription").value ;
+    		json["brand"] =document.getElementById("highImpactAssetBrand").value ;
+    		if($scope.assetDropDown=='publication'){
+    			json["typeOfAsset2"] = $scope.publicationDropDown ; 
+    		}else if($scope.assetDropDown=='material'){
+    			json["typeOfAsset2"] = $scope.materialDropDown ;
+    		}else{
+    			json["typeOfAsset2"] = "null"
+    		}
+    	}   		
     	 $http({
  		      method:'POST',
  		      url:'http://localhost:9080/Achievements-App/Services/AchievementManipulation/AddAchievement', 
