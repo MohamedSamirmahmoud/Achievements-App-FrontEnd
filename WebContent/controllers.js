@@ -472,6 +472,29 @@ app.controller ("achievementsController",function ($scope,$http,submissions,Shar
     		   json['typeOfCertification'] = document.getElementById("mentorshipCertificationType").value ;
     	   }
     	   
+    	}else if($scope.myDropDwon=="Board Reviews"){
+			
+			json["type"] = "BoardReviews" ;
+			 json["typeOfCertificate"] = $scope.BoardReviewsCertificationMenu;
+			 json["flag"] = document.getElementById("BoardReviewsFlag").value;
+			 json["reviewType"] = $scope.BoardReviewsTypeMenu;
+			 json["boardReviewLevel"] = $scope.BoardReviewsLevelMenu;
+			 alert(JSON.stringify(json));
+      	
+    	}else if($scope.myDropDown=="Certifications & Programs"){
+    		json["type"] = "CertificationsAndPrograms" ;
+    		json["TypeOfCertification"] = $scope.CertificationProgramType ;
+    		if($scope.CertificationProgramType=="Product"){
+    			json["proudctName"] = document.getElementById("CertificationProgramProductName").value;
+    		    json["busUnit"] = document.getElementById("CertificationProgramBusinessUnits").value;
+    		    json["brand"] = document.getElementById("CertificationProgramBrand").value;
+    			json["certificatioExam"] = document.getElementById("CertificationProgramCertificationExam").value;
+    		}else if($scope.CertificationProgramType=="Professional"){
+    			 json["level"] = $scope.CertificationProgramProfessionalLevel;
+    			 json["professionalType"] = $scope.CertificationProgramProfessionalType;
+    				 
+    		}
+    		
     	}else if ($scope.myDropDown=='Disclosure'){
     		json["title"] = document.getElementById("disclosureTitle").value ; 
     		json["number"]  = document.getElementById("disclosureNumber").value ;  
