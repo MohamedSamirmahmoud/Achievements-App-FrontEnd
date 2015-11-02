@@ -13,7 +13,9 @@
                         </div>
                     </div>        
 		</nav>	
-    
+ 
+ 
+
 <div class="container">
    <!-- <h2><br>
        
@@ -142,18 +144,20 @@
             </form>
         </div>
         
-        <div ng-show="myDropDown=='Board Reviews'">
-			
+         <div ng-show="myDropDown=='Board Reviews'">
             Type of Certification :
-        <select ng-model="certificationMenu" class="form-control">
+        <select ng-model="BoardReviewsCertificationMenu" class="form-control">
             <option selected></option>
             <option value="its">ITS</option>
             <option value="ita">ITA</option>
             <option value="PMP">PMP</option>
         </select>
             <br>
-            Level:
-        <select ng-model="levelMenu" class="form-control">
+              Flag:
+                <input id="BoardReviewsFlag" type="text" class="form-control">
+                <br>
+              Level:
+        <select ng-model="BoardReviewsLevelMenu" class="form-control">
             <option selected></option>
             <option value="l1">1</option>
             <option value="l2">2</option>
@@ -162,7 +166,7 @@
         </select>
             <br>
             Review Type:
-        <select ng-model="reviewMenu" class="form-control">
+        <select ng-model="BoardReviewsTypeMenu" class="form-control">
             <option selected></option>
             <option value="InititalPR">Initital Package Review</option>
             <option value="BoardReview">Board Review</option>
@@ -1191,7 +1195,7 @@
             </form>
         </div>
 
-        <div ng-show="myDropDown=='Certifications & Programs'">
+           <div ng-show="myDropDown=='Certifications & Programs'">
             <form class="form-group">
                 Type Of Certification:
                         <select ng-model="CertificationProgramType" class="form-control">
@@ -1203,22 +1207,26 @@
                 <br>
                 <div ng-show="CertificationProgramType=='Product'">
                     Product Name: 
-                    <input type="Text" class="form-control" name="ProductName">
+                    <input id="CertificationProgramProductName"  type="Text" class="form-control" name="ProductName">
                     <br>
                     Business Units:
-                    <select class="form-control">
+                    <select id="CertificationProgramBusinessUnits"  class="form-control">
                         <option selected></option>
                         <option ng-repeat="AchievementsData in myAchievementsData.BusinessUnits" value="{{AchievementsData.name}}">{{AchievementsData.name}}</option>
                     </select>
                     <br>
+                    Brand :
+                    <br>
+                      <input id="CertificationProgramBrand"  type="text" class="form-control">
+                       <br>
                     Certification Exam:
-                    <input type="Text" class="form-control" name="CertificationExam">
+                    <input id="CertificationProgramCertificationExam"  type="Text" class="form-control" name="CertificationExam">
                     <br>
                 </div>
 
                 <div ng-show="CertificationProgramType=='Professional'">
                     Type:  
-                        <select ng-model="ProfessionalType" class="form-control">
+                        <select ng-model="CertificationProgramProfessionalType" class="form-control">
                             <option selected></option>
                             <option value="ITS">ITS</option>
                             <option value="ITA">ITA</option>
@@ -1226,7 +1234,7 @@
                         </select>
                     <br>
                     Level:
-                        <select ng-model="ProfessionalLevel" class="form-control">
+                        <select ng-model="CertificationProgramProfessionalLevel" class="form-control">
                             <option selected></option>
                             <option value="L1">L1</option>
                             <option value="L2">L2</option>
@@ -1237,7 +1245,7 @@
                 </div>
             </form>
         </div>
-
+                
         <div ng-show="myDropDown=='Revenue Influence'">
             <form class="form-group">
                 License
@@ -1886,3 +1894,6 @@
 	 
    
 </div>
+
+
+ 
