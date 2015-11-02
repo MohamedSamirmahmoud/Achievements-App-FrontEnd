@@ -38,7 +38,7 @@
         <div ng-show="!myDropDown==''">
             <form>
                 Employee Name:
-                <input type="text" class="form-control"><br>
+                <input id="employeeSharedWithName" type="text" class="form-control"><br>
 				  <!--
 
 -->
@@ -60,14 +60,17 @@
           <p>Please select the employee(s) you've worked with: </p>
              
       
-    <div ng-repeat="shared in users | filter:search" for="{{shared.employeeMai}}">
-    <input type="checkbox" value="{{shared.employeeId}}" name="employeeList[]"/>
+     <div ng-repeat="shared in users | filter:search" for="{{shared.employeeMai}}">
+    <input type="checkbox" value="shared.employeeMail" name="employeeList[]"/>
       {{shared.employeeMail}}
+     
     </div>
+    
+   
           </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-           <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
+             <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
         </div>
       </div>
       
@@ -116,18 +119,22 @@
               
                 <br>
                 Date:
-                <input type="date" class="form-control"><br>
+                <input id="achievementDate" type="date" class="form-control"><br>
+                Lob Name: 
+                <input id="lobName" type="text" class="form-control"><br>
+                
             </form>
         </div>
         
         <div ng-show="myDropDown=='Disclosure'">
             <form>
                 Title:
-                <input type="text" class="form-control"><br>
+                <input id="disclosureTitle" type="text" class="form-control"><br>
                 Number:
-                <input type="text" class="form-control"><br>
+                <input id="disclosureNumber" type="text" class="form-control"><br>
+                
                 Status: 
-                <select class="form-control">
+                <select id="disclosureStatus" class="form-control">
                     <option value="submitted">Submitted</option>
                     <option value="filed">Filed</option>
                     <option value="issued">Issued</option>
@@ -183,10 +190,10 @@
         <div ng-show="myDropDown=='Customer Reference'">
             Customer Name:
             <br>
-            <input type="text" class="form-control"><br>
+            <input id="customerReferenceCustomerName"   type="text" class="form-control"><br>
             Country:
             <br>
-            <select name="country" class="form-control">
+            <select id="customerReferenceCountry"  name="country" class="form-control">
                 <option value=""></option>
                 <option value="AF">Afghanistan</option>
                 <option value="AL">Albania</option>
@@ -436,30 +443,30 @@
                 <option value="ZW">Zimbabwe</option>
             </select>
             <br>
-            Link to Customer Reference :
+           Brand :
             <br>
-            <input type="text" class="form-control">
+            <input id="customerReferenceBarnd"  type="text" class="form-control">
             <br>
             Business Units :
             <br>
-            <select class="form-control">
+            <select id="customerReferenceBusUnit"  class="form-control">
                 <option selected></option>
                 <option ng-repeat="AchievementsData in myAchievementsData.BusinessUnits" value="{{AchievementsData.name}}">{{AchievementsData.name}}</option>
             </select>
             <br>
             Engagement Name :
             <br>
-            <input type="text" class="form-control">
+            <input id="customerReferenceEngagementName"  type="text" class="form-control">
             <br>
         </div>
 
         <div ng-show="myDropDown=='Customer Saves'">
             Customer Name:
             <br>
-            <input type="text" class="form-control"><br>
+            <input id="customerSavesCustomerName" type="text" class="form-control"><br>
             Country:
             <br>
-            <select name="country" class="form-control">
+            <select id="customerSavesCountry" name="country" class="form-control">
                 <option value=""></option>
                 <option value="AF">Afghanistan</option>
                 <option value="AL">Albania</option>
@@ -712,23 +719,25 @@
             <br>
             Business Units :
             <br>
-            <select class="form-control">
+            <select id="customerSavesBusUnit" class="form-control">
                 <option selected></option>
                 <option ng-repeat="AchievementsData in myAchievementsData.BusinessUnits" value="{{AchievementsData.name}}">{{AchievementsData.name}}</option>
             </select>
             <br>
             Employee Contribution :
             <br>
-            <input type="text" class="form-control">
+            <input id="customerSavesEmployeeContribution" type="text" class="form-control">
             <br>
             Customer Problem :
             <br>
-            <textarea class="form-control"></textarea>
+            <textarea id="customerSavesCustomerProblem" class="form-control"></textarea>
             <br>
             Engagement Name :
             <br>
-            <input type="text" class="form-control">
+            <input id="customerSavesEngagmentName" type="text" class="form-control">
             <br>
+             Brand:
+             <input id="customerSavesSkillBrand" type="text" class="form-control"><br>
         </div>
 
         <div ng-show="myDropDown=='Feedback to Development'">
@@ -804,9 +813,11 @@
                             <form>
                                 <br>
                                 Name:
-                                <input type="text" class="form-control"><br>
+                                <input id="highImpactAssetName" type="text" class="form-control"><br>
                                 Description:
-                                <textarea class="form-control"></textarea><br>
+                                <textarea id="highImpactAssetDescription" class="form-control"></textarea><br>
+                                 Brand:
+                         <input id="highImpactAssetBrand" type="text" class="form-control"><br>
                             </form>
                         </div>
                     </div>
@@ -824,23 +835,13 @@
                <option value="summerInternship">Summer Internship</option>
            </select>
         
-
-        <div ng-show="mentorshipDropDown=='career'">
-            <form>
-                <br>
-                Description:
-                <textarea class="form-control"></textarea><br>
-            </form>
-
-        </div>
-		
+  
         <div ng-show="mentorshipDropDown=='certification'">
             <form>
                 <br>
                 Type of Certification:
-                <input type="text" class="form-control"><br>
-                Description:
-                <textarea class="form-control"></textarea><br>
+                <input id="mentorshipCertificationType" type="text" class="form-control"><br>
+            
             </form>
 
         </div>
@@ -848,19 +849,19 @@
             <form>
                 <br>
                 Area:
-                <input type="text" class="form-control"><br>
+                <input id="mentorshipSkillArea" type="text" class="form-control"><br>
                 Duration (in weeks):
-                <input type="number" class="form-control"><br>
-                Description:
-                <textarea class="form-control"></textarea><br>
+                <input id="mentorshipSkillDuration" type="number" class="form-control"><br>
+                Brand:
+                <input id="mentorshipSkillBrand" type="text" class="form-control"><br>
             </form>
-
         </div>
-        <div ng-show="mentorshipDropDown=='summerInternship'">
+       
+               <div>
             <form>
                 <br>
                 Description:
-                <textarea class="form-control"></textarea><br>
+                <textarea id="mentorShipDescription" class="form-control"></textarea><br>
             </form>
         </div>
 		</div>
@@ -868,11 +869,11 @@
             <form>
                 <br>
                 Customer Name:
-                <input type="text" class="form-control"><br>
+                <input id="successStoriesCustomerName" type="text" class="form-control"><br>
                 Engagement Name:
-                <input type="text" class="form-control"><br>
+                <input id="successStoriesEngagementName" type="text" class="form-control"><br>
                 Country:
-                <select name="country" class="form-control">
+                <select id="successStoriesCountry"  name="country" class="form-control">
                     <option value=""></option>
                     <option value="AF">Afghanistan</option>
                     <option value="AL">Albania</option>
@@ -1124,16 +1125,16 @@
                 </select>
                 <br>
                 Business Units:
-                <select class="form-control">
+                <select id="successStoriesBusinessUnits" class="form-control">
                 <option selected></option>
                 <option ng-repeat="AchievementsData in myAchievementsData.BusinessUnits" value="{{AchievementsData.name}}">{{AchievementsData.name}}</option>
             </select>
                 <br>
                 Link to Success Story:
-                <input type="url" class="form-control"><br>
+                <input id="successStoriesLinkToSuccessStory" type="url" class="form-control"><br>
                 Type:
                 <br>
-                <select class="form-control">
+                <select id="successStoriesType" class="form-control">
                     <option selected></option>
                     <option>Success Story</option>
                     <option>WIN</option>
@@ -1147,7 +1148,7 @@
         <div ng-show="myDropDown=='Enablement'">
             <form class="form-group">
                 Type Of Enablement:
-                    <select ng-model="EnablementType" class="form-control">
+                    <select  ng-model="EnablementType" class="form-control">
                         <option selected></option>
                         <option value="Customer">Customer</option>
                         <option value="Partner">Partner</option>
@@ -1157,23 +1158,23 @@
                     </select>
                 <br>
                 Title:
-                <input type="Text" class="form-control" name="Title">
+                <input id="enablementTitle" type="Text" class="form-control" name="Title">
                 <br>
                 Duration:
-                <input type="number" class="form-control" name="Duration">
+                <input id="enablementDuration" type="number" class="form-control" name="Duration">
                 <br>
                 Number of Attendees:
-                <input type="Text" class="form-control" name="NumberOfAttendees">
+                <input id="enablementNumberOfAttendees"  type="Text" class="form-control" name="NumberOfAttendees">
                 <br>
                 Business Units:
-                <select class="form-control">
+                <select  id="enablementBusinessUnits" class="form-control">
                     <option selected></option>
                     <option ng-repeat="AchievementsData in myAchievementsData.BusinessUnits" value="{{AchievementsData.name}}">{{AchievementsData.name}}</option>
                 </select>
                 <br>
                 <div ng-show="EnablementType=='Customer'">
                     Customer Name: 
-                    <input type="Text" class="form-control" name="ProductName">
+                    <input id="EnablementCustomerName" type="Text" class="form-control" name="ProductName">
                     <br>
                     Customer Type:
                     <select ng-model="CustomerType" class="form-control">
@@ -1185,7 +1186,7 @@
                     <br>
                 </div>
                 Event:
-                <input type="Text" class="form-control" name="Event">
+                <input id="EnablementEvent" type="Text" class="form-control" name="Event">
                 <br>
             </form>
         </div>
@@ -1240,24 +1241,24 @@
         <div ng-show="myDropDown=='Revenue Influence'">
             <form class="form-group">
                 License
-                <input type="radio" name="Type" value="License" checked>
+                <input  type="radio" name="revenueInfelunceType" value="License" checked>
                 Serives
-                <input type="radio" name="Type" value="Serives">
+                <input  type="radio" name="revenueInfelunceType" value="Serives">
                 Other LOB
-                <input type="radio" name="Type" value="OtherLOB">
+                <input  type="radio" name="revenueInfelunceType" value="OtherLOB">
                 <br>
                 <br>
                 Business Units:
-               <select class="form-control">
+               <select id="revenueInfluenceBusinessUnits" class="form-control">
                 <option selected></option>
                 <option ng-repeat="AchievementsData in myAchievementsData.BusinessUnits" value="{{AchievementsData.name}}">{{AchievementsData.name}}</option>
             </select>
                 <br>
                 Amount:
-                <input type="number" class="form-control" name="Amount">
+                <input id="revenueInfluenceAmount" type="number" class="form-control" name="Amount">
                 <br>
                 Description Of Contribution:
-                        <textarea name="DescriptionOfContribution" class="form-control" rows="4" cols="20">
+                        <textarea id="revenueInfluenceAmountDescriptionOfContribution" name="DescriptionOfContribution" class="form-control" rows="4" cols="20">
                         </textarea>
                 <br>
                 Contribution Type:
@@ -1270,11 +1271,11 @@
                         </select>
                 <br>
                 Customer Name:
-                <input type="Text" class="form-control" name="CustomerName">
+                <input id="revenueInfluenceCustomerName" type="Text" class="form-control" name="CustomerName">
                 <br>
                 Country:
                 <br>
-                <select name="country" class="form-control">
+                <select id="revenueInfluenceCountry" name="country" class="form-control">
                     <option value=""></option>
                     <option value="AF">Afghanistan</option>
                     <option value="AL">Albania</option>
@@ -1526,32 +1527,34 @@
                 <br>
                 <br>
                 Engagement Name:
-                <input type="Text" class="form-control" name="EngagementName">
+                <input id="revenueInfluenceEngagementName" type="Text" class="form-control" name="EngagementName">
                 <br>
+                 Brand:
+                <input id="mentorshipSkillBrand" type="text" class="form-control"><br>
             </form>
         </div>
 
         <div ng-show="myDropDown=='Speaking/Organizing Events'">
             <form class="form-group">
                 Title of Event:
-                <input type="Text" class="form-control" name="Title">
+                <input id="SpeakingOrganizingTitleOfEvent" type="Text" class="form-control" name="Title">
                 <br>
                 Speaker
-                <input type="radio" name="Type" ng-model="Type" value="Speaker" checked>
+                <input  type="radio" name="SpeakingOrganizingType" ng-model="Type" value="Speaker" checked>
                 Organizer
-                <input type="radio" name="Type" ng-model="Type" value="Organizer">
+                <input  type="radio" name="SpeakingOrganizingType" ng-model="Type" value="Organizer">
                 Both
-                <input type="radio" name="Type" ng-model="Type" value="Both">
+                <input  type="radio" name="SpeakingOrganizingType" ng-model="Type" value="Both">
                 <br>
                 <br>
                 <div ng-show="Type=='Organizer' || Type=='Both' ">
                     Role of Organizer: 
-                    <input type="Text" class="form-control" name="RoleOfOrganizer">
+                    <input id="SpeakingOrganizingRoleOfOrganizer"  type="Text" class="form-control" name="RoleOfOrganizer">
                     <br>
                 </div>
                 Country:
                 <br>
-                <select name="country" class="form-control">
+                <select id="SpeakingOrganizingCountry" name="country" class="form-control">
                     <option value=""></option>
                     <option value="AF">Afghanistan</option>
                     <option value="AL">Albania</option>
@@ -1803,26 +1806,26 @@
 
                 <br>
                 Business Units:
-                <select class="form-control">
+                <select id="SpeakingOrganizingBusinessUnits"class="form-control">
                 <option selected></option>
                 <option ng-repeat="AchievementsData in myAchievementsData.BusinessUnits" value="{{AchievementsData.name}}">{{AchievementsData.name}}</option>
             </select>
                 <br>
                 Title of Conference:
-                <input type="Text" class="form-control" name="TitleOfConference">
+                <input id="SpeakingOrganizingTitleofConference" type="Text" class="form-control" name="TitleOfConference">
                 <br>
                 Session:
-                <input type="Text" class="form-control" name="Session">
+                <input id="SpeakingOrganizingSession" type="Text" class="form-control" name="Session">
                 <br>
                 Internal(IBM)
-                <input type="radio" name="IBM" checked>
+                <input type="radio" name="SpeakingOrganizingIBM" value="Internal(IBM)" checked>
                 External
-                <input type="radio" name="IBM">
+                <input type="radio" name="SpeakingOrganizingIBM" value="External">
                 <br>
                 <br>
                 Type Of Event:
                 <br>
-                <select class="form-control">
+                <select id="SpeakingOrganizingTypeOfEvent" class="form-control">
                     <option selected></option>
                     <option ng-repeat="AchievementsData in myAchievementsData.Events" value="{{AchievementsData.name}}">{{AchievementsData.name}}</option>
                 </select>
@@ -1835,7 +1838,7 @@
         
         <div ng-show="!myDropDown==''">
 			Comments:
-            <textarea class="form-control"></textarea><br>
+            <textarea id="comment" class="form-control"></textarea><br>
             <a ng-click="addAchievement()" class="btn btn-primary" style="margin-bottom: 30px;" value="Submit">Submit </a>
         </div>
         
@@ -1883,4 +1886,3 @@
 	 
    
 </div>
-
