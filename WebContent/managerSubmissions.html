@@ -40,11 +40,11 @@
                     </th>
                 </tr>
                 <tr ng-repeat="subms in employeeSubmissions | orderBy:'date':true">
-                    <td><a id="{{subms.id}}" ng-click="showAchievements(subms.id)"><span class="glyphicon glyphicon-edit"></span>  </a></td>
-                    <td>{{subms.name}}</td>
-                    <td>{{subms.type}}</td>
-                    <td>{{subms.label}}</td>
-                    <td>{{subms.date}}</td>
+                    <td><a id="{{subms.achievementId}}" ng-click="showAchievements(subms.achievementId , subms.achievementType)"><span class="glyphicon glyphicon-edit"></span>  </a></td>
+                    <td>{{subms.employees[0].employeeName}}</td>
+                    <td>{{subms.achievementType}}</td>
+                    <td>{{subms.lobName}}</td>
+                    <td>{{subms.achievementDate}}</td>
                 </tr>
             </table>
             

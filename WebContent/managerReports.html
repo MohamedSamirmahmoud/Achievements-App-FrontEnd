@@ -16,7 +16,496 @@
                     </div>        
 		</nav>
 <div class="container" style="padding-top:20px;">
-   
-    <h1>Reserved for Manager Reports!</h1>
+       
     
-</div>
+  <br><br>
+  <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <h3 >Search By:</h3> 
+            <select class="form-control" ng-model="searchFor" >
+                <option value="EmployeeID"  ng-model="searchFor" >Employee ID</option>
+                <option value="Status"  ng-model="searchFor" >Status</option>
+                <option value="IDplusStatus"  ng-model="searchFor">Employee ID & Status</option>
+                <option value="Date"  ng-model="searchFor">Date</option>
+                <option value="AchievementType"  ng-model="searchFor">Achievement Type</option>
+                <option value="Brand"  ng-model="searchFor">Brand</option>
+            </select>
+            <br />
+            <br />
+        </div>
+    </div>
+  
+   <form role="form">
+        <div class="form-group" ng-show="searchFor=='EmployeeID'">
+            <div class="input-group">
+                 <div class="input-group-addon"><i class="fa fa-search"></i></div>
+
+                    <input type="text" class="form-control" placeholder="Search by EmployeeID" ng-model="searchID">
+                    
+
+      </div>
+            <br>
+      <button ng-click="searchID=''">Clear</button>
+    </div>
+        
+        
+          <div class="form-group" ng-show="searchFor=='Status'" >
+            <div class="input-group">
+        
+                <strong>Status</strong> <br>
+                   <input type="radio" name="statusType" value="Approved"  ng-click="getAchievementsByStatus('Approved')"  ng-model="searchStatus"> Approved<br>
+                    <input type="radio" name="statusType" value="Pending"   ng-click="getAchievementsByStatus('Pending')"   ng-model="searchStatus"> Pending<br>
+                    <input type="radio" name="statusType" value="Declined"  ng-click="getAchievementsByStatus('Rejected')"   ng-model="searchStatus"> Rejected<br>
+                    <input type="radio" name="statusType" value="Declined"   ng-click="getAchievementsByStatus('Returned')"  ng-model="searchStatus"> Returned<br>
+      </div>
+      
+    </div>
+          
+          <div class="form-group" ng-show="searchFor=='IDplusStatus'">
+            
+            <div class="input-group">
+                 <div class="input-group-addon"><i class="fa fa-search"></i></div>
+
+                    <input type="text" class="form-control" placeholder="Search by EmployeeID" ng-model="searchID">
+                    
+
+      </div>
+            
+            <br>
+                    <hr>
+            <div class="input-group">
+        
+                <strong>Status</strong> <br>
+                    <input type="radio" name="statusType" value="Approved"  ng-click="getAchievementsByStatus('Approved')"  ng-model="searchStatus"> Approved<br>
+                    <input type="radio" name="statusType" value="Pending"   ng-click="getAchievementsByStatus('Pending')"   ng-model="searchStatus"> Pending<br>
+                    <input type="radio" name="statusType" value="Declined"  ng-click="getAchievementsByStatus('Rejected')"   ng-model="searchStatus"> Rejected<br>
+                    <input type="radio" name="statusType" value="Declined"   ng-click="getAchievementsByStatus('Returned')"  ng-model="searchStatus"> Returned<br>
+      </div>
+            
+            
+     </div>
+          
+          
+          <div id="yearDropDown" class="form-group" ng-show="searchFor=='Date'">
+          
+          <select class="form-control" ng-model="dateDropDown">
+          <h3 style="font-family: fantasy;">Search By:</h3>
+          <option value="Quarter" ng-model="dateDropDown">Quarter
+          <option value="Month" ng-model="dateDropDown">Month
+          </select>
+          </div>
+          
+          
+         
+          <div ng-show="dateDropDown=='Quarter'">
+           <h3 style="font-family: fantasy;">Year:</h3>
+              <select ng-model="yearDropDown">
+             
+               <option ng-repeat="n in range()">{{n}}</option>
+              </select>
+             <h3 style="font-family: fantasy;">Quarter:</h3> 
+              <select ng-model="quarterDropDown">
+             
+              <option ng-model="quarterDropDown"> 1</option>
+              <option ng-model="quarterDropDown"> 2</option>
+              <option ng-model="quarterDropDown"> 3</option>
+              <option ng-model="quarterDropDown"> 4</option>
+              </select>
+                </div>
+           <div ng-show="dateDropDown=='Month'">
+           <h3 style="font-family: fantasy;">Year:</h3>
+              <select ng-model="yearDropDown">
+             
+               <option ng-repeat="n in range()">{{n}}</option>
+              </select>
+              
+              
+              <h3 style="font-family: fantasy;"> Month:</h3>
+              <select ng-model="monthDropDown">
+              
+              <option ng-model="monthDropDown"> 1</option>
+              <option ng-model="monthDropDown"> 2</option>
+              <option ng-model="monthDropDown"> 3</option>
+              <option ng-model="monthDropDown"> 4</option>
+              <option ng-model="monthDropDown"> 5</option>
+              <option ng-model="monthDropDown"> 6</option>
+              <option ng-model="monthDropDown"> 7</option>
+              <option ng-model="monthDropDown"> 8</option>
+              <option ng-model="monthDropDown"> 9</option>
+              <option ng-model="monthDropDown"> 10</option>
+              <option ng-model="monthDropDown"> 11</option>
+              <option ng-model="monthDropDown"> 12</option>
+              </select>
+                </div>      
+                
+               
+
+<div ng-show="searchFor=='AchievementType'">
+                <div class="row">
+                       <div class="col-md-6 col-md-offset-3">
+                           <h3 style="font-family: fantasy;">Select Achievement :</h3> 
+                           <select class="form-control" ng-model="myDropDown"  >
+                               <option selected ></option>
+                               <option ng-click="getAchievementsByType(AchievementsData.name)" ng-repeat="AchievementsData in myAchievementsData.Achievements"   value="{{AchievementsData.name}}">{{AchievementsData.name}}</option>
+                           </select>
+                           <br />
+                           <br />
+                       </div>
+                   </div>
+                
+            </div>
+            <div>    
+                
+        <div class="form-group" ng-show="searchFor=='Brand'">
+             <strong>Search By Brand</strong> <br>
+            
+                <select class="form-control" ng-model="searchBrand" > 
+                <option value="Analytics"  ng-model="searchBrand" >Analytics</option>
+                <option value="Cloud"  ng-model="searchBrand" >Cloud</option>
+                <option value="Commerce"  ng-model="searchBrand">Commerce</option>
+                <option value="Health Care"  ng-model="searchBrand">Health Care</option>
+                <option value="Security"  ng-model="searchBrand">Security</option>
+                <option value="Systems"  ng-model="searchBrand">Systems</option>
+                <option value="Watson"  ng-model="searchBrand">Watson</option>
+            </select>
+                     
+      
+        </div>
+            
+    
+    <hr>
+    <div ng-show="searchFor=='EmployeeID'">
+
+ <table class="table table-striped text-center" style="width:900px;">
+                <tr>
+                <th class="text-center" Style="width:auto;">Employee ID
+                    </th>
+                    <th class="text-center" Style="width:auto;">Employee Name
+                    </th>
+                    <th class="text-center" Style="width:auto;">Achievement Type
+                    </th>
+                    <th Style="width:auto;" class="text-center">LOB Name
+                    </th>
+                    <th class="text-center" Style="width:auto;">Achievement Date
+                    </th>
+                     <th class="text-center" Style="width:auto;">Status
+                    </th>
+                </tr>
+                <tr ng-repeat="ReqData in myReqData | filter:{achievementId:searchID}">
+                    <td> {{ReqData.achievementId}}</td>
+                    <td>{{RedData.employeeName}}</td>
+                    <td>{{ReqData.achievementType}}</td>
+                    <td>{{ReqData.lobName}}</td>
+                    <td>{{ReqData.achievementDate}}</td>
+                    
+                    <td>
+                        <div ng-switch on="ReqData.status">
+                            <div ng-switch-when="Approved" style="color:green">
+                                 {{ReqData.status}}
+                                <span class="glyphicon glyphicon-ok" style="color:green"> </span>
+                            </div>
+                        </div> 
+                        <div ng-switch on="ReqData.status">
+                            <div ng-switch-when="Pending" style="color:orange">
+                                 {{ReqData.status}}
+                                <span class="glyphicon glypbhicon-hourglass" style="color:orange"></span>
+                            </div>
+                        </div> 
+                        <div ng-switch on="ReqData.status">
+                            <div ng-switch-when="Rejected" style="color:red">
+                                 {{ReqData.status}}
+                                <span class="glyphicon glyphicon-remove" style="color:red"></span>
+                            </div>
+                        </div> 
+                        <div ng-switch on="ReqData.status">
+                            <div ng-switch-when="Returned" style="color:blue">
+                                 {{ReqData.status}}
+                               <a id="{ReqData.achievementId}" ng-click="showAchievements(ReqData.achievementId)"><span class="glyphicon glyphicon-share-alt" style="color:blue"> </span></a>
+                            </div>
+                        </div> 
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+   
+   
+  <div ng-show="searchFor=='Status'">
+   
+ <table class="table table-striped text-center" style="width:900px;">
+                <tr>
+                    <th class="text-center" Style="width:auto;">Employee Name
+                    </th>
+                    <th class="text-center" Style="width:auto;">Achievement Type
+                    </th>
+                    <th Style="width:auto;" class="text-center">LOB Name
+                    </th>
+                    <th class="text-center" Style="width:auto;">Achievement Date
+                    </th>
+                     <th class="text-center" Style="width:auto;">Status
+                    </th>
+                </tr>
+                <tr ng-repeat="ReqData in myReqDataStatus">
+                    <td>{{RedData.employees[0].employeeName}}</td>
+                    <td>{{ReqData.achievementType}}</td>
+                    <td>{{ReqData.lobName}}</td>
+                    <td>{{ReqData.achievementDate}}</td>
+                    
+                    <td>
+                        <div ng-switch on="ReqData.status">
+                            <div ng-switch-when="Approved" style="color:green">
+                                 {{ReqData.status}}
+                                <span class="glyphicon glyphicon-ok" style="color:green"> </span>
+                            </div>
+                        </div> 
+                        <div ng-switch on="ReqData.status">
+                            <div ng-switch-when="Pending" style="color:orange">
+                                 {{ReqData.status}}
+                                <span class="glyphicon glypbhicon-hourglass" style="color:orange"></span>
+                            </div>
+                        </div> 
+                        <div ng-switch on="ReqData.status">
+                            <div ng-switch-when="Rejected" style="color:red">
+                                 {{ReqData.status}}
+                                <span class="glyphicon glyphicon-remove" style="color:red"></span>
+                            </div>
+                        </div> 
+                        <div ng-switch on="ReqData.status">
+                            <div ng-switch-when="Returned" style="color:blue">
+                                 {{ReqData.status}}
+                               <a id="{ReqData.achievementId}" ng-click="showAchievements(ReqData.achievementId)"><span class="glyphicon glyphicon-share-alt" style="color:blue"> </span></a>
+                            </div>
+                        </div> 
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+        
+  <div ng-show="searchFor=='AchievementType'">
+   
+ <table class="table table-striped text-center" style="width:900px;">
+                <tr>
+                    <th class="text-center" Style="width:auto;">Employee Name
+                    </th>
+                    <th class="text-center" Style="width:auto;">Achievement Type
+                    </th>
+                    <th Style="width:auto;" class="text-center">LOB Name
+                    </th>
+                    <th class="text-center" Style="width:auto;">Achievement Date
+                    </th>
+                     <th class="text-center" Style="width:auto;">Status
+                    </th>
+                </tr>
+                <tr ng-repeat="ReqData in myReqDataType ">
+                    <td>{{RedData.employeeName}}</td>
+                    <td>{{ReqData.achievementType}}</td>
+                    <td>{{ReqData.lobName}}</td>
+                    <td>{{ReqData.achievementDate}}</td>
+                    
+                    <td>
+                        <div ng-switch on="ReqData.status">
+                            <div ng-switch-when="Approved" style="color:green">
+                                 {{ReqData.status}}
+                                <span class="glyphicon glyphicon-ok" style="color:green"> </span>
+                            </div>
+                        </div> 
+                        <div ng-switch on="ReqData.status">
+                            <div ng-switch-when="Pending" style="color:orange">
+                                 {{ReqData.status}}
+                                <span class="glyphicon glypbhicon-hourglass" style="color:orange"></span>
+                            </div>
+                        </div> 
+                        <div ng-switch on="ReqData.status">
+                            <div ng-switch-when="Rejected" style="color:red">
+                                 {{ReqData.status}}
+                                <span class="glyphicon glyphicon-remove" style="color:red"></span>
+                            </div>
+                        </div> 
+                        <div ng-switch on="ReqData.status">
+                            <div ng-switch-when="Returned" style="color:blue">
+                                 {{ReqData.status}}
+                               <a id="{ReqData.achievementId}" ng-click="showAchievements(ReqData.achievementId)"><span class="glyphicon glyphicon-share-alt" style="color:blue"> </span></a>
+                            </div>
+                        </div> 
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+         <div ng-show="searchFor=='Brand'">
+   
+ <table class="table table-striped text-center" style="width:900px;">
+                <tr>
+                <th class="text-center" Style="width:auto;">Employee Id
+                    </th>
+                    <th class="text-center" Style="width:auto;">Employee Name
+                    </th>
+                    <th class="text-center" Style="width:auto;">Achievement Type
+                    </th>
+                    <th Style="width:auto;" class="text-center">LOB Name
+                    </th>
+                    <th class="text-center" Style="width:auto;">Achievement Date
+                    </th>
+                     <th class="text-center" Style="width:auto;">Status
+                    </th>
+                   
+                </tr>
+                <tr ng-repeat="ReqData in myReqData |filter:searchBrand">
+                    <td> {{ReqData.employeeId}}</td>
+                    <td>{{RedData.employeeName}}</td>
+                    <td>{{ReqData.achievementType}}</td>
+                    <td>{{ReqData.lobName}}</td>
+                    <td>{{ReqData.achievementDate}}</td>
+                   
+                    
+                    
+                    <td>
+                        <div ng-switch on="ReqData.status">
+                            <div ng-switch-when="Approved" style="color:green">
+                                 {{ReqData.status}}
+                                <span class="glyphicon glyphicon-ok" style="color:green"> </span>
+                            </div>
+                        </div> 
+                        <div ng-switch on="ReqData.status">
+                            <div ng-switch-when="Pending" style="color:orange">
+                                 {{ReqData.status}}
+                                <span class="glyphicon glypbhicon-hourglass" style="color:orange"></span>
+                            </div>
+                        </div> 
+                        <div ng-switch on="ReqData.status">
+                            <div ng-switch-when="Rejected" style="color:red">
+                                 {{ReqData.status}}
+                                <span class="glyphicon glyphicon-remove" style="color:red"></span>
+                            </div>
+                        </div> 
+                        <div ng-switch on="ReqData.status">
+                            <div ng-switch-when="Returned" style="color:blue">
+                                 {{ReqData.status}}
+                               <a id="{ReqData.achievementId}" ng-click="showAchievements(ReqData.achievementId)"><span class="glyphicon glyphicon-share-alt" style="color:blue"> </span></a>
+                            </div>
+                        </div> 
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+        
+             <div ng-show="searchFor=='IDplusStatus'">
+   
+ <table class="table table-striped text-center" style="width:900px;">
+                <tr>
+                <th class="text-center" Style="width:auto;">Employee ID
+                    </th>
+                    <th class="text-center" Style="width:auto;">Employee Name
+                    </th>
+                    <th class="text-center" Style="width:auto;">Achievement Type
+                    </th>
+                    <th Style="width:auto;" class="text-center">LOB Name
+                    </th>
+                    <th class="text-center" Style="width:auto;">Achievement Date
+                    </th>
+                     <th class="text-center" Style="width:auto;">Status
+                    </th>
+                </tr>
+                <tr ng-repeat="ReqData in myReqData |filter:{achievementId:searchID}|filter:{status:searchStatus}">
+                    <td> {{ReqData.achievementId}}</td>
+                    <td>{{RedData.employeeName}}</td>
+                    <td>{{ReqData.achievementType}}</td>
+                    <td>{{ReqData.lobName}}</td>
+                    <td>{{ReqData.achievementDate}}</td>
+                    
+                    <td>
+                        <div ng-switch on="ReqData.status">
+                            <div ng-switch-when="Approved" style="color:green">
+                                 {{ReqData.status}}
+                                <span class="glyphicon glyphicon-ok" style="color:green"> </span>
+                            </div>
+                        </div> 
+                        <div ng-switch on="ReqData.status">
+                            <div ng-switch-when="Pending" style="color:orange">
+                                 {{ReqData.status}}
+                                <span class="glyphicon glypbhicon-hourglass" style="color:orange"></span>
+                            </div>
+                        </div> 
+                        <div ng-switch on="ReqData.status">
+                            <div ng-switch-when="Rejected" style="color:red">
+                                 {{ReqData.status}}
+                                <span class="glyphicon glyphicon-remove" style="color:red"></span>
+                            </div>
+                        </div> 
+                        <div ng-switch on="ReqData.status">
+                            <div ng-switch-when="Returned" style="color:blue">
+                                 {{ReqData.status}}
+                               <a id="{ReqData.achievementId}" ng-click="showAchievements(ReqData.achievementId)"><span class="glyphicon glyphicon-share-alt" style="color:blue"> </span></a>
+                            </div>
+                        </div> 
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+        
+        <div ng-show="searchFor=='Date'">
+   
+ <table class="table table-striped text-center" style="width:900px;">
+                <tr>
+                <th class="text-center" Style="width:auto;">Employee ID
+                    </th>
+                    <th class="text-center" Style="width:auto;">Employee Name
+                    </th>
+                    <th class="text-center" Style="width:auto;">Achievement Type
+                    </th>
+                    <th Style="width:auto;" class="text-center">LOB Name
+                    </th>
+                    <th class="text-center" Style="width:auto;">Achievement Date
+                    </th>
+                     <th class="text-center" Style="width:auto;">Status
+                    </th>
+                </tr>
+                <tr ng-repeat="ReqData in myReqData ">
+                    <td> {{ReqData.achievementId}}</td>
+                    <td>{{RedData.employeeName}}</td>
+                    <td>{{ReqData.achievementType}}</td>
+                    <td>{{ReqData.lobName}}</td>
+                    <td>{{ReqData.achievementDate | date : 'MM/dd/yyyy'}}</td>
+                    
+                    <td>
+                        <div ng-switch on="ReqData.status">
+                            <div ng-switch-when="Approved" style="color:green">
+                                 {{ReqData.status}}
+                                <span class="glyphicon glyphicon-ok" style="color:green"> </span>
+                            </div>
+                        </div> 
+                        <div ng-switch on="ReqData.status">
+                            <div ng-switch-when="Pending" style="color:orange">
+                                 {{ReqData.status}}
+                                <span class="glyphicon glypbhicon-hourglass" style="color:orange"></span>
+                            </div>
+                        </div> 
+                        <div ng-switch on="ReqData.status">
+                            <div ng-switch-when="Rejected" style="color:red">
+                                 {{ReqData.status}}
+                                <span class="glyphicon glyphicon-remove" style="color:red"></span>
+                            </div>
+                        </div> 
+                        <div ng-switch on="ReqData.status">
+                            <div ng-switch-when="Returned" style="color:blue">
+                                 {{ReqData.status}}
+                               <a id="{ReqData.achievementId}" ng-click="showAchievements(ReqData.achievementId)"><span class="glyphicon glyphicon-share-alt" style="color:blue"> </span></a>
+                            </div>
+                        </div> 
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+   
+        
+        
+        </div>
+   

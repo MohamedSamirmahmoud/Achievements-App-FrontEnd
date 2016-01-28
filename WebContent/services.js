@@ -19,7 +19,6 @@ app.factory('usersFile', function($http) {
 	          'Content-type':'application/json'
 	      }       
 	  });   
-	   
    }; 
    return services ;
 });
@@ -27,7 +26,29 @@ app.factory('usersFile', function($http) {
 
 
 app.factory('submissions', function($http) { 
-    return $http.get('submissions.json');
+   var services ={} ; 
+   services.getManagerSubmissions = function(mangerId){
+	   return  $http({
+		      method:'POST',
+		      url:'http://localhost:9080/Achievements-App/Services/AchievementQuerying/getManagerSubmissions', 
+		      params:{'managerId':mangerId},
+		      headers:{
+		          'Content-stype':'application/json'
+		      }       
+		  });
+   } ;
+   services.getAchievementById = function(achievementId){
+	   return  $http({
+		      method:'POST',
+		      url:'http://localhost:9080/Achievements-App/Services/AchievementQuerying/GetAchievementById', 
+		      params:{'achievementId':achievementId},
+		      headers:{
+		          'Content-stype':'application/json'
+		      }       
+		  });
+	   
+   };
+   return services ;
 });
 
 app.factory('achievementTypes', function($http) { 
@@ -42,6 +63,43 @@ app.factory('myRequests', function($http) {
 	}
 	   return services;
 });
+
+app.factory('myRequestsByStatus', function($http) { 
+	var services ={};
+	services.getAchievementsByStatus = function(status){
+	return $http.get('http://localhost:9080/Achievements-App/Services/AchievementQuerying/getAchievementsByStatus/'+status);
+	}
+	   return services;
+});
+
+app.factory('myRequestsByStatusAndID', function($http) { 
+	var services ={};
+	services.getAchievementsByEmployeeIdAndStatus = function(employeeId,status){
+	return $http.get('http://localhost:9080/Achievements-App/Services/AchievementQuerying/getAchievementsByEmployeeIdAndStatus/'+employeeId+'/'+status);
+	}
+	   return services;
+});
+
+app.factory('myRequestsByType', function($http) { 
+	var services ={};
+	services.getAchievmentByType = function(type  , managerId){
+	return $http.get('http://localhost:9080/Achievements-App/Services/AchievementQuerying/getAchievmentByType/'+type+'/'+managerId);
+	}
+	   return services;
+});
+
+
+app.factory('myRequestsByBrand', function($http) { 
+	var services ={};
+	services.getAchievementsByBrandAndEmployeeId = function(employeeId,brand){
+	return $http.get('http://localhost:9080/Achievements-App/Services/AchievementQuerying/getAchievementsByBrandAndEmployeeId/'+employeeId+brand);
+	}
+	   return services;
+});
+
+
+
+
 app.factory('disclosureTable', function($http) { 
     return $http.get('disclosure.json');
 });
