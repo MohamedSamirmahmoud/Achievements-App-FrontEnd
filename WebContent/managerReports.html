@@ -93,7 +93,7 @@
           <option value="Quarter" ng-model="dateDropDown">Quarter
           <option value="Month" ng-model="dateDropDown">Month
           </select>
-          </div>
+          
           
           
          
@@ -101,12 +101,12 @@
            <h3 style="font-family: fantasy;">Year:</h3>
               <select ng-model="yearDropDown">
              
-               <option ng-repeat="n in range()">{{n}}</option>
+               <option ng-repeat="n in range()" ng-selected="true">{{n}}</option>
               </select>
              <h3 style="font-family: fantasy;">Quarter:</h3> 
               <select ng-model="quarterDropDown">
              
-              <option ng-model="quarterDropDown"> 1</option>
+              <option ng-model="quarterDropDown" ng-selected="true"> 1</option>
               <option ng-model="quarterDropDown"> 2</option>
               <option ng-model="quarterDropDown"> 3</option>
               <option ng-model="quarterDropDown"> 4</option>
@@ -116,14 +116,14 @@
            <h3 style="font-family: fantasy;">Year:</h3>
               <select ng-model="yearDropDown">
              
-               <option ng-repeat="n in range()">{{n}}</option>
+               <option ng-repeat="n in range()" ng-selected="true">{{n}}</option>
               </select>
               
               
               <h3 style="font-family: fantasy;"> Month:</h3>
               <select ng-model="monthDropDown">
               
-              <option ng-model="monthDropDown"> 1</option>
+              <option ng-model="monthDropDown" ng-selected="true"> 1</option>
               <option ng-model="monthDropDown"> 2</option>
               <option ng-model="monthDropDown"> 3</option>
               <option ng-model="monthDropDown"> 4</option>
@@ -138,7 +138,7 @@
               </select>
                 </div>      
                 
-               
+               </div>
 
 <div ng-show="searchFor=='AchievementType'">
                 <div class="row">
@@ -246,7 +246,7 @@
                     </th>
                 </tr>
                 <tr ng-repeat="ReqData in myReqDataStatus">
-                    <td>{{RedData.employees[0].employeeName}}</td>
+                    <td>{{firstEmployeeName}}</td>
                     <td>{{ReqData.achievementType}}</td>
                     <td>{{ReqData.lobName}}</td>
                     <td>{{ReqData.achievementDate}}</td>
@@ -508,4 +508,3 @@
         
         
         </div>
-   

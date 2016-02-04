@@ -18,6 +18,8 @@
     
     <div style="width:auto; float: left;">
          <h1>Reserved for Employee View!</h1><br><br><br><br><br>
+         <div id="resultDiv"></div>
+         <div id="employeeSubmit"></div>
         <div class="panel panel-default ">
             <table class="table table-striped text-center" style="width:900px;">
                 <tr>
@@ -45,7 +47,7 @@
                         <div ng-switch on="ReqData.status">
                             <div ng-switch-when="Pending" style="color:orange">
                                  {{ReqData.status}}
-                                <span class="glyphicon glypbhicon-hourglass" style="color:orange"></span>
+                                <span class="glyphicon glyphicon-hourglass" style="color:orange"></span>
                             </div>
                         </div> 
                         <div ng-switch on="ReqData.status">
@@ -57,7 +59,7 @@
                          <div ng-switch on="ReqData.status">
                             <div ng-switch-when="Returned" style="color:blue">
                                  {{ReqData.status}}
-                               <a id="{ReqData.achievementId}" ng-click="showAchievements(ReqData.achievementId)"><span class="glyphicon glyphicon-share-alt" style="color:blue"> </span></a>
+                               <a id="{ReqData.achievementId}" ng-click="showAchievements(ReqData.achievementId , ReqData.achievementType , false)"><span class="glyphicon glyphicon-share-alt" style="color:blue"> </span></a>
                             </div>
                         </div> 
                     </td>

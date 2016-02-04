@@ -135,16 +135,10 @@
                 Number:
                 <input id="disclosureNumber" type="text" class="form-control"><br>
                 
-                Status: 
-                <select id="disclosureStatus" class="form-control">
-                    <option value="submitted">Submitted</option>
-                    <option value="filed">Filed</option>
-                    <option value="issued">Issued</option>
-                </select>
             </form>
         </div>
         
-         <div ng-show="myDropDown=='Board Reviews'">
+         <div ng-show="myDropDown=='BoardReviews'">
             Type of Certification :
         <select ng-model="BoardReviewsCertificationMenu" class="form-control">
             <option selected></option>
@@ -191,7 +185,7 @@
 		-->
         </div>
 
-        <div ng-show="myDropDown=='Customer Reference'">
+        <div ng-show="myDropDown=='CustomerReference'">
             Customer Name:
             <br>
             <input id="customerReferenceCustomerName"   type="text" class="form-control"><br>
@@ -464,7 +458,7 @@
             <br>
         </div>
 
-        <div ng-show="myDropDown=='Customer Saves'">
+        <div ng-show="myDropDown=='CustomerSave'">
             Customer Name:
             <br>
             <input id="customerSavesCustomerName" type="text" class="form-control"><br>
@@ -744,7 +738,7 @@
              <input id="customerSavesSkillBrand" type="text" class="form-control"><br>
         </div>
 
-        <div ng-show="myDropDown=='Feedback to Development'">
+        <div ng-show="myDropDown=='FeedbacktoDevelopment'">
             <form>
                         Type of Feedback :<br>
                         <select ng-model="feedbackMenu" class="form-control">
@@ -776,9 +770,8 @@
             </form>
         </div>
 
-        <!-- // ============================================= Kareeeeeeeeeeeeeeeeeeeeeeeem ================= -->
 
-        <div ng-show="myDropDown=='High Impact Asset'">
+        <div ng-show="myDropDown=='HighImpactAsset'">
                 <div class="col-md-3">Type of Asset</div>
 
                 <div class="col-md-4">
@@ -869,7 +862,7 @@
             </form>
         </div>
 		</div>
-        <div ng-show="myDropDown=='Success Stories'">
+        <div ng-show="myDropDown=='SuccessStories'">
             <form>
                 <br>
                 Customer Name:
@@ -1195,7 +1188,7 @@
             </form>
         </div>
 
-           <div ng-show="myDropDown=='Certifications & Programs'">
+           <div ng-show="myDropDown=='CertificationsAndPrograms'">
             <form class="form-group">
                 Type Of Certification:
                         <select ng-model="CertificationProgramType" class="form-control">
@@ -1246,7 +1239,7 @@
             </form>
         </div>
                 
-        <div ng-show="myDropDown=='Revenue Influence'">
+        <div ng-show="myDropDown=='RevenueInfluence'">
             <form class="form-group">
                 License
                 <input  type="radio" name="revenueInfelunceType" value="License" checked>
@@ -1542,7 +1535,7 @@
             </form>
         </div>
 
-        <div ng-show="myDropDown=='Speaking/Organizing Events'">
+        <div ng-show="myDropDown=='SpeakingOrganizingEvent'">
             <form class="form-group">
                 Title of Event:
                 <input id="SpeakingOrganizingTitleOfEvent" type="Text" class="form-control" name="Title">
@@ -1847,7 +1840,7 @@
         <div ng-show="!myDropDown==''">
 			Comments:
             <textarea id="comment" class="form-control"></textarea><br>
-            <a ng-click="addAchievement()" class="btn btn-primary" style="margin-bottom: 30px;" value="Submit">Submit </a>
+            <a href="#/employeeMyRequests" ng-click="addAchievement()" class="btn btn-primary" style="margin-bottom: 30px;" value="Submit">Submit </a>
         </div>
         
     </div>

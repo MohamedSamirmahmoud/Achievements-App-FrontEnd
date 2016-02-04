@@ -1,17 +1,17 @@
 {
     "Achievements":[
         {"name": "Disclosure"},
-        {"name": "Board Reviews"},
-        {"name": "Customer Reference"},
-        {"name": "Customer Saves"},
-        {"name": "Feedback to Development"},
-        {"name": "High Impact Asset"},
+        {"name": "BoardReviews"},
+        {"name": "CustomerReferences"},
+        {"name": "CustomerSave"},
+        {"name": "FeedbackToDevelopment"},
+        {"name": "HighImpactAsset"},
         {"name": "Mentorship"},
-        {"name": "Success Stories"},
+        {"name": "SuccessStories"},
         {"name": "Enablement"},
-        {"name": "Certifications & Programs"},
-        {"name": "Revenue Influence"},
-        {"name": "Speaking/Organizing Events"}
+        {"name": "CertificationsAndPrograms"},
+        {"name": "RevenueInfluence"},
+        {"name": "SpeakingOrganizingEvent"}
     ],
     "BusinessUnits": [
                     {"name": "Analytics"},

@@ -82,7 +82,7 @@ app.controller("homeController",function($scope,$location,$http,usersFile,Shared
 
 
 
-app.controller ("achievementsController",function ($scope,$http,submissions,Shared,achievementTypes,myRequests,myRequestsByBrand,myRequestsByStatus,myRequestsByStatusAndID,myRequestsByType,disclosureTable,usersFile)
+app.controller ("achievementsController",function ($scope,$http,$compile,submissions,Shared,achievementTypes,myRequests,myRequestsByBrand,myRequestsByStatus,myRequestsByStatusAndID,myRequestsByType,disclosureTable,usersFile)
 {
 	 
 	$scope.range = function(){
@@ -92,6 +92,18 @@ app.controller ("achievementsController",function ($scope,$http,submissions,Shar
 	    	 arry.push(i) ; 
 	     }
 		return arry ;
+	}
+	
+	$scope.splitEmployees = function (employees){
+		var names = "";
+		for (var i = 0; i < employees.length ; i++) {
+			names += employees[i].employeeName + ";" ;
+			
+		}
+		return names;
+		
+		
+		
 	}
 	
 	usersFile.getEmployeesInTheSameTeam(Shared.get("employeeId")).success(function(userInfo){
@@ -109,24 +121,29 @@ app.controller ("achievementsController",function ($scope,$http,submissions,Shar
     $scope.getAchievementsByStatus = function(status){
     myRequestsByStatus.getAchievementsByStatus(status).success(function(request){ 
         $scope.myReqDataStatus = request;
+        $scope.firstEmployeeName = request.employees[0].employeeName ;
+        alert(status);
          });
     } ;
     
     $scope.getAchievementsByEmployeeIdAndStatus = function(status){
     myRequestsByStatusAndID.getAchievementsByEmployeeIdAndStatus(Shared.get("employeeId") , status).success(function(request){ 
         $scope.myReqDataStatusAndID = request;
+        $scope.firstEmployeeName = request.employees[0].employeeName ;
     });
     };
     
     $scope.getAchievementsByType = function(type){
     myRequestsByType.getAchievmentByType(type , Shared.get("employeeId")).success(function(request){ 
         $scope.myReqDataType = request;
+        $scope.firstEmployeeName = request.employees[0].employeeName ;
     });
     } ; 
     
     $scope.getAchievementsByBrandAndEmployeeId = function(brand){
     myRequestsByBrand.getAchievementsByBrandAndEmployeeId(Shared.get("employeeId") , brand).success(function(request){ 
         $scope.myReqDataBrand = request;
+        $scope.firstEmployeeName = request.employees[0].employeeName ;
     });
     } ;
     
@@ -142,236 +159,244 @@ app.controller ("achievementsController",function ($scope,$http,submissions,Shar
     
     $scope.username = Shared.get('username');
     
-   $scope.showAchievements = function(idValue , achievementType){
+   $scope.showAchievements = function(idValue , achievementType , isManager){
 	   
 	   submissions.getAchievementById(idValue).success(function (resp){
 		   $scope.achievementJson = resp ;
-		   alert($scope.achievementJson.achievementId) ;
+		   $scope.achievementId = idValue ; 
 		   var result = document.getElementById("resultDiv");
+		   alert(achievementType) ;
 		   
 		   if(achievementType == 'Disclosure'){
                result.innerHTML = 
                    "<form>"+
                    "<h3>Employee Name: </h3><input type='text' class='form-control' disabled value='" + $scope.achievementJson.achievement.employees[0].employeeName +"'/>" + 
-                   "<h3>Achievement Type: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType + "'/>" + 
-                   "<h3>Label: </h3><textarea class='form-control'>" + $scope.achievementJson.achievement.lobName + "</textarea>" + 
-                   "<h3>Date: </h3><input type='date' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/></textarea>" + 
-                   "<h3>Shared with: </h3><textarea class='form-control'>" +  $scope.achievementJson.shared + "</textarea>" + 
-                   "<h3>Number: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.number + "'/>" + 
-                   "<h3>Status: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.status + "'/>" + 
-                   "<h3>Comments: </h3><textarea class='form-control'>" +  $scope.achievementJson.comment + "</textarea><br>";
-                   
-              
-          } else if(achievementType == 'Board Reviews'){
+                   "<h3>Achievement Type: </h3><input  id='achievementType' type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType + "'/>" + 
+                   "<h3>Label: </h3><textarea id='lobName' class='form-control'>" + $scope.achievementJson.achievement.lobName + "</textarea>" + 
+                   "<h3>Title: </h3><input  id='achievementTitle' type='text' class='form-control' value='" + $scope.achievementJson.title + "'/>" +
+                   "<h3>Date: </h3><input id='achievementDate' type='date' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/></textarea>" + 
+                   "<h3>Shared with: </h3><textarea class='form-control'>" + $scope.splitEmployees( $scope.achievementJson.achievement.employees) + "</textarea>" + 
+                   "<h3>Number: </h3><input id='achievementNum' type='text' class='form-control' value='" + $scope.achievementJson.number + "'/>" + 
+                   "<h3>Comments: </h3><textarea id='comment' class='form-control'>" +  $scope.achievementJson.achievement.comment + "</textarea><br>";
+          }else if(achievementType == 'BoardReviews'){
                result.innerHTML = 
                "<form>"+
                    "<h3>Employee Name: </h3><input type='text' class='form-control' disabled value='" + $scope.achievementJson.achievement.employees[0].employeeName +"'/>" + 
-                   "<h3>Achievement Type: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType  + "'/>" + 
-                   "<h3>Label: </h3><textarea class='form-control'>" + $scope.achievementJson.achievement.lobName + "</textarea>" + 
-                   "<h3>Date: </h3><input type='date' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/>" +                     "<h3>Shared with: </h3><textarea class='form-control'>" + $scope.employeeSubmissions[i].shared + "</textarea>" + 
-                   "<h3>Type of Certification: </h3><input type='text' class='form-control' value='" +  $scope.achievementJson.typeOfCertificate + "'/>" + 
-                   "<h3>Level: </h3><input type='text' class='form-control' value='" +$scope.achievementJson.boardReviewLevel + "'/>" + 
-                   "<h3>Review Type: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.reviewType + "'/>" + 
-                   "<h3>Comments: </h3><textarea class='form-control'>" + $scope.achievementJson.comment + "</textarea><br>";
+                   "<h3>Achievement Type: </h3><input id='achievementType' type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType  + "'/>" + 
+                   "<h3>Label: </h3><textarea id='lobName' class='form-control'>" + $scope.achievementJson.achievement.lobName + "</textarea>" + 
+                   "<h3>flag: </h3><input id='flag' class='form-control' value='" + $scope.achievementJson.flag + "'/>" +
+                   "<h3>Date: </h3><input id='achievementDate' type='date' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/>" +                    
+                   "<h3>Shared with: </h3><textarea class='form-control'>" + $scope.splitEmployees( $scope.achievementJson.achievement.employees) + "</textarea>" + 
+                   "<h3>Type of Certification: </h3><input id='typeOfCertification'  type='text' class='form-control' value='" +  $scope.achievementJson.typeOfCertificate + "'/>" + 
+                   "<h3>Level: </h3><input id='level' type='text' class='form-control' value='" +$scope.achievementJson.boardReviewLevel + "'/>" + 
+                   "<h3>Review Type: </h3><input id='reviewType' type='text' class='form-control' value='" + $scope.achievementJson.reviewType + "'/>" + 
+                   "<h3>Comments: </h3><textarea id='comment' class='form-control'>" + $scope.achievementJson.achievement.comment + "</textarea><br>";
            }
-              else if(achievementType == 'Customer Reference'){
+              else if(achievementType == 'CustomerReferences'){
                result.innerHTML = 
                "<form>"+
                    "<h3>Employee Name: </h3><input type='text' class='form-control' disabled value='" +$scope.achievementJson.achievement.employees[0].employeeName +"'/>" + 
-                   "<h3>Achievement Type: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType + "'/>" + 
-                   "<h3>Label: </h3><textarea class='form-control'>" + $scope.achievementJson.achievement.lobName + "</textarea>" + 
-                   "<h3>Date: </h3><input type='date' class='form-control' value='" + $scope.$scope.achievementJson.achievement.achievementDate + "'/>" +                     "<h3>Shared with: </h3><textarea class='form-control'>" + $scope.employeeSubmissions[i].shared + "</textarea>" + 
-                   "<h3>Customer Name: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.customerName + "'/>" + 
-                   "<h3>Country: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.country + "'/>" + 
-                    "<h3>Link to Customer Reference: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.brand + "'/>" + 
-                   "<h3>Business Unit: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.busUnit + "'/>" + 
-                   "<h3>Engagement Name: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.engagementName + "'/>" + 
-                   "<h3>Comments: </h3><textarea class='form-control'>" + $scope.achievementJson.comment + "</textarea><br>";
+                   "<h3>Achievement Type: </h3><input id='achievementType' type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType + "'/>" + 
+                   "<h3>Label: </h3><textarea id='lobName' class='form-control'>" + $scope.achievementJson.achievement.lobName + "</textarea>" + 
+                   "<h3>Date: </h3><input id='achievementDate' type='date' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/>" + "<h3>Shared with: </h3><textarea class='form-control'>" + $scope.splitEmployees( $scope.achievementJson.achievement.employees) + "</textarea>" + 
+                   "<h3>Customer Name: </h3><input id='customerName' type='text' class='form-control' value='" + $scope.achievementJson.customerName + "'/>" + 
+                   "<h3>Country: </h3><input type='text' id='country' class='form-control' value='" + $scope.achievementJson.country + "'/>" + 
+                   "<h3>Brand: </h3><input type='text' id='brand' class='form-control' value='" + $scope.achievementJson.brand + "'/>" + 
+                    "<h3>Link to Customer Reference: </h3><input id='customerReference' type='text' class='form-control' value='" + $scope.achievementJson.brand + "'/>" + 
+                   "<h3>Business Unit: </h3><input type='text' id='businessUnit' class='form-control' value='" + $scope.achievementJson.busUnit + "'/>" + 
+                   "<h3>Engagement Name: </h3><input type='text' id='engagementName' class='form-control' value='" + $scope.achievementJson.engagementName + "'/>" + 
+                   "<h3>Comments: </h3><textarea id='comment' class='form-control'>" + $scope.achievementJson.achievement.comment + "</textarea><br>";
            }
-           
-           else if(achievementType == 'Customer Saves'){
+           else if(achievementType == 'CustomerSave'){
                result.innerHTML = 
                "<form>"+
                    "<h3>Employee Name: </h3><input type='text' class='form-control' disabled value='" + $scope.achievementJson.achievement.employees[0].employeeName +"'/>" + 
-                   "<h3>Achievement Type: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType + "'/>" + 
-                   "<h3>Label: </h3><textarea class='form-control'>" +  $scope.achievementJson.achievement.lobName + "</textarea>" + 
-                   "<h3>Date: </h3><input type='date' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate  + "'/>" +                     "<h3>Shared with: </h3><textarea class='form-control'>" + $scope.employeeSubmissions[i].shared + "</textarea>" + 
-                   "<h3>Customer Name: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.customerName + "'/>" + 
-                   "<h3>Country: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.country + "'/>" + 
-                   "<h3>Business Unit: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.businessUnits + "'/>" + 
-                   "<h3>Employee Contribution: </h3><textarea class='form-control'>" + $scope.achievementJson.employeeContribution + "</textarea>" + 
-                   "<h3>Customer Problem: </h3><textarea class='form-control'>" + $scope.achievementJson.customerProblem + "</textarea>" + 
-                   "<h3>Engagement Name: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.engagementName + "'/>" + 
-                   "<h3>Comments: </h3><textarea class='form-control'>" +$scope.achievementJson.comment  + "</textarea><br>";
+                   "<h3>Achievement Type: </h3><input id='achievementType' type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType + "'/>" + 
+                   "<h3>Label: </h3><input id='lobName' type='text' class='form-control' value='" +  $scope.achievementJson.achievement.lobName + "'/>" + 
+                   "<h3>Date: </h3><input id='achievementDate' type='date' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate  + "'/>" +"<h3>Shared with: </h3><textarea class='form-control'>" +  $scope.splitEmployees( $scope.achievementJson.achievement.employees)+ "</textarea>" + 
+                   "<h3>Customer Name: </h3><input id='customerName' type='text' class='form-control' value='" + $scope.achievementJson.customerName + "'/>" + 
+                   "<h3>Country: </h3><input type='text' id='country' class='form-control' value='" + $scope.achievementJson.country + "'/>" + 
+                   "<h3>Brand: </h3><input type='text' id='brand' class='form-control' value='" + $scope.achievementJson.brand + "'/>" + 
+                   "<h3>Business Unit: </h3><input type='text' id='businessUnit' class='form-control' value='" + $scope.achievementJson.businessUnits + "'/>" + 
+                   "<h3>Employee Contribution: </h3><textarea id='employeeContribution' class='form-control'>" + $scope.achievementJson.employeeContribution + "</textarea>" + 
+                   "<h3>Customer Problem: </h3><textarea id='customerProblem' class='form-control'>" + $scope.achievementJson.customerProblem + "</textarea>" + 
+                   "<h3>Engagement Name: </h3><input id='engagementName' type='text' class='form-control' value='" + $scope.achievementJson.engagementName + "'/>" + 
+                   "<h3>Comments: </h3><textarea id='comment' class='form-control'>" +$scope.achievementJson.achievement.comment  + "</textarea><br>";
            }
-           
-            else if(achievementType == 'Feedback to Development'){
+            else if(achievementType == 'FeedbackToDevelopment'){
                 if($scope.achievementJson.typeOfFeedback == 'Defect'){
                result.innerHTML = 
                "<form>"+
                    "<h3>Employee Name: </h3><input type='text' class='form-control' disabled value='" + $scope.achievementJson.achievement.employees[0].employeeName +"'/>" + 
-                   "<h3>Achievement Type: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType + "'/>" + 
-                   "<h3>Label: </h3><textarea class='form-control'>" + $scope.achievementJson.achievement.lobName + "</textarea>" + 
-                   "<h3>Date: </h3><input type='date' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/>" +                     "<h3>Shared with: </h3><textarea class='form-control'>" + $scope.employeeSubmissions[i].shared + "</textarea>" + 
-                   "<h3>Type of Feedback: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.typeOfFeedback + "'/>" + 
-                    "<h3>PMR Number: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.pmrNumber + "'/>" + 
-                   "<h3>Business Unit: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.businessUnits + "'/>" + 
-                   "<h3>Product: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.product + "'/>" + 
+                   "<h3>Achievement Type: </h3><input id='achievementType' type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType + "'/>" + 
+                   "<h3>Label: </h3><textarea id='lobName' class='form-control'>" + $scope.achievementJson.achievement.lobName + "</textarea>" + 
+                   "<h3>Date: </h3><input type='date' id='achievementDate' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/>" + "<h3>Shared with: </h3><textarea class='form-control'>" +  $scope.splitEmployees( $scope.achievementJson.achievement.employees) + "</textarea>" + 
+                   "<h3>Type of Feedback: </h3><input type='text' id='typeOfFeedback' class='form-control' value='" + $scope.achievementJson.typeOfFeedback + "'/>" + 
+                    "<h3>PMR Number: </h3><input type='text' id='pmrNum' class='form-control' value='" + $scope.achievementJson.pmrNumber + "'/>" + 
+                   "<h3>Business Unit: </h3><input type='text' id='businessUnit' class='form-control' value='" + $scope.achievementJson.businessUnits + "'/>" + 
+                   "<h3>Product: </h3><input type='text' id='product' class='form-control' value='" + $scope.achievementJson.product + "'/>" + 
                   
-                   "<h3>Comments: </h3><textarea class='form-control'>" + $scope.achievementJson.comment + "</textarea><br>";
+                   "<h3>Comments: </h3><textarea id='comment' class='form-control'>" + $scope.achievementJson.achievement.comment + "</textarea><br>";
                 }else{
                      result.innerHTML = 
                "<form>"+
                    "<h3>Employee Name: </h3><input type='text' class='form-control' disabled value='" + $scope.achievementJson.achievement.employees[0].employeeName +"'/>" + 
-                   "<h3>Achievement Type: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType + "'/>" + 
-                   "<h3>Label: </h3><textarea class='form-control'>" + $scope.achievementJson.achievement.lobName + "</textarea>" + 
-                   "<h3>Date: </h3><input type='date' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/>" +                     "<h3>Shared with: </h3><textarea class='form-control'>" + $scope.employeeSubmissions[i].shared + "</textarea>" + 
-                   "<h3>Type of Feedback: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.typeOfFeedback + "'/>" + 
-                   "<h3>PMR Number: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.pmrNumber + "'/>" + 
-                   "<h3>Business Unit: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.businessUnits + "'/>" + 
-                   "<h3>Product: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.product + "'/>" + 
-                  
-                   "<h3>Comments: </h3><textarea class='form-control'>" +  $scope.achievementJson.comment + "</textarea><br>";
+                   "<h3>Achievement Type: </h3><input id='achievementType' type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType + "'/>" + 
+                   "<h3>Label: </h3><textarea id='lobName' class='form-control'>" + $scope.achievementJson.achievement.lobName + "</textarea>" + 
+                   "<h3>Date: </h3><input type='date' id='achievementDate' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/>" +                     "<h3>Shared with: </h3><textarea class='form-control'>" + $scope.employeeSubmissions[i].shared + "</textarea>" + 
+                   "<h3>Type of Feedback: </h3><input type='text' id='typeOfFeedback' class='form-control' value='" + $scope.achievementJson.typeOfFeedback + "'/>" + 
+                   "<h3>PMR Number: </h3><input type='text' id='pmrNum' class='form-control' value='" + $scope.achievementJson.pmrNumber + "'/>" + 
+                   "<h3>Business Unit: </h3><input type='text' id='businessUnit' class='form-control' value='" + $scope.achievementJson.businessUnits + "'/>" + 
+                   "<h3>Product: </h3><input type='text' id='product' class='form-control' value='" + $scope.achievementJson.product + "'/>" + 
+                   "<h3>Comments: </h3><textarea id='comment' class='form-control'>" +  $scope.achievementJson.achievement.comment + "</textarea><br>";
                 }
            }
            
-           else if($scope.achievementJson.achievement.achievementType == 'High Impact Asset'){
-                if($scope.achievementJson.typeOfAsset == 'Publication' || $scope.achievementJson.typeOfAsset == 'Material'){
+           else if(achievementType== 'HighImpactAsset'){
+                if($scope.achievementJson.typeOfAsset == 'publication' || $scope.achievementJson.typeOfAsset == 'material'){
                result.innerHTML = 
                "<form>"+
                    "<h3>Employee Name: </h3><input type='text' class='form-control' disabled value='" + $scope.achievementJson.achievement.employees[0].employeeName  +"'/>" + 
-                   "<h3>Achievement Type: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType + "'/>" + 
-                   "<h3>Label: </h3><textarea class='form-control'>" + $scope.achievementJson.achievement.lobName + "</textarea>" + 
-                   "<h3>Date: </h3><input type='date' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/>" +                     "<h3>Shared with: </h3><textarea class='form-control'>" + $scope.employeeSubmissions[i].shared + "</textarea>" + 
-                   "<h3>Type of Asset: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.typeOfAsset + "'/>" + 
-                   "<input type='text' class='form-control' value='" + $scope.achievementJson.typeOfAsset2 + "'/>" + 
-                   "<h3>Comments: </h3><textarea class='form-control'>" + $scope.achievementJson.comment + "</textarea><br>";
+                   "<h3>Achievement Type: </h3><input id='achievementType' type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType + "'/>" + 
+                   "<h3>Brand: </h3><input id='brand' type='text' class='form-control' value='" + $scope.achievementJson.brand + "'/>" + 
+                   "<h3>Description: </h3><input id='description' type='text' class='form-control' value='" + $scope.achievementJson.description + "'/>" + 
+                   "<h3>High Impact Asset Name: </h3><input id='highImpactAssetName' type='text' class='form-control' value='" + $scope.achievementJson.highImpactAssetName + "'/>" + 
+                   "<h3>Label: </h3><textarea id='lobName' class='form-control'>" + $scope.achievementJson.achievement.lobName + "</textarea>" + 
+                   "<h3>Date: </h3><input type='date' id='achievementDate' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/>" +                     "<h3>Shared with: </h3><textarea class='form-control'>" +  $scope.splitEmployees( $scope.achievementJson.achievement.employees) + "</textarea>" + 
+                   "<h3>Type of Asset: </h3><input id='typeOfAsset' type='text' class='form-control' value='" + $scope.achievementJson.typeOfAsset + "'/>" + 
+                   "<input type='text' id='typeOfAsset2' class='form-control' value='" + $scope.achievementJson.typeOfAsset2 + "'/>" + 
+                   "<h3>Comments: </h3><textarea id='comment' class='form-control'>" + $scope.achievementJson.achievement.comment + "</textarea><br>";
                 }
                else{
                result.innerHTML = 
                "<form>"+
                    "<h3>Employee Name: </h3><input type='text' class='form-control' disabled value='" + $scope.achievementJson.achievement.employees[0].employeeName +"'/>" + 
-                   "<h3>Achievement Type: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType + "'/>" + 
-                   "<h3>Label: </h3><textarea class='form-control'>" + $scope.achievementJson.achievement.lobName + "</textarea>" + 
-                   "<h3>Date: </h3><input type='date' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/>" +                     "<h3>Shared with: </h3><textarea class='form-control'>" + $scope.employeeSubmissions[i].shared + "</textarea>" + 
-                   "<h3>Type of Asset: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.typeOfAsset + "'/>" + 
-                   "<h3>Comments: </h3><textarea class='form-control'>" + $scope.achievementJson.comment + "</textarea><br>";
+                   "<h3>Achievement Type: </h3><input id='achievementType' type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType + "'/>" + 
+                   "<h3>Brand: </h3><input id='brand' type='text' class='form-control' value='" + $scope.achievementJson.brand + "'/>" + 
+                   "<h3>Description: </h3><input id='description' type='text' class='form-control' value='" + $scope.achievementJson.description + "'/>" + 
+                   "<h3>High Impact Asset Name: </h3><input id='highImpactAssetName' type='text' class='form-control' value='" + $scope.achievementJson.highImpactAssetName + "'/>" + 
+                   "<h3>Label: </h3><textarea id='lobName' class='form-control'>" + $scope.achievementJson.achievement.lobName + "</textarea>" + 
+                   "<h3>Date: </h3><input type='date' id='achievementDate' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/>" +                     "<h3>Shared with: </h3><textarea class='form-control'>" +  $scope.splitEmployees( $scope.achievementJson.achievement.employees) + "</textarea>" + 
+                   "<h3>Type of Asset: </h3><input id='typeOfAsset' type='text' class='form-control' value='" + $scope.achievementJson.typeOfAsset + "'/>" + 
+                   "<h3>Comments: </h3><textarea id='comment' class='form-control'>" + $scope.achievementJson.achievement.comment + "</textarea><br>";
                }
                
            }
-           else if($scope.achievementJson.achievement.achievementType == 'Mentorship'){
-               if($scope.achievementJson.typeOfMentorship == 'Certification'){
+           else if(achievementType == 'MentorShip'){
+        	   try{
+               if($scope.achievementJson.mentorship.typeOfMentorship == 'Certification'){
                result.innerHTML = 
                "<form>"+
-                   "<h3>Employee Name: </h3><input type='text' class='form-control' disabled value='" + $scope.achievementJson.achievement.employees[0].employeeName +"'/>" + 
-                   "<h3>Achievement Type: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType+ "'/>" + 
-                   "<h3>Label: </h3><textarea class='form-control'>" + $scope.achievementJson.achievement.lobName+ "</textarea>" + 
-                   "<h3>Date: </h3><input type='date' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/>" +                     "<h3>Shared with: </h3><textarea class='form-control'>" + $scope.employeeSubmissions[i].shared + "</textarea>" + 
-                   "<h3>Type of Mentorship: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.typeOfMentorship + "'/>" + 
-                   "<h3>Type of Certification: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.typeOfCertification + "'/>" + 
-                   "<h3>Comments: </h3><textarea class='form-control'>" + $scope.achievementJson.comment  + "</textarea><br>";
+                   "<h3>Employee Name: </h3><input type='text' class='form-control' disabled value='" + $scope.achievementJson.mentorship.achievement.employees[0].employeeName +"'/>" + 
+                   "<h3>Achievement Type: </h3><input id='achievementType' type='text' class='form-control' value='" + $scope.achievementJson.mentorship.achievement.achievementType+ "'/>" + 
+                   "<h3>Label: </h3><textarea id='lobName' class='form-control'>" + $scope.achievementJson.mentorship.achievement.lobName+ "</textarea>" + 
+                   "<h3>Date: </h3><input type='date' id='achievementDate' class='form-control' value='" + $scope.achievementJson.mentorship.achievement.achievementDate + "'/>" +                     "<h3>Shared with: </h3><textarea class='form-control'>" +  $scope.splitEmployees( $scope.achievementJson.mentorship.achievement.employees) + "</textarea>" + 
+                   "<h3>Type of Mentorship: </h3><input id='typeMentorship' type='text' class='form-control' value='" + $scope.achievementJson.mentorship.typeOfMentorship + "'/>" + 
+                   "<h3>Type of Certification: </h3><input type='text' id='typeCertification' class='form-control' value='" + $scope.achievementJson.typeOfCertification + "'/>" + 
+                   "<h3>Description of Mentorship: </h3><input type='text' id='mentorShipDescription' class='form-control' value='" + $scope.achievementJson.mentorship.description + "'/>" + 
+                   "<h3>Comments: </h3><textarea id='comment' class='form-control'>" + $scope.achievementJson.mentorship.achievement.comment  + "</textarea><br>";
            }
-               else if($scope.achievementJson.achievement.achievementType == 'Skill'){
+               else if($scope.achievementJson.mentorship.typeOfMentorship == 'Skill'){
+                   result.innerHTML = 
+               "<form>"+
+                   "<h3>Employee Name: </h3><input type='text' class='form-control' disabled value='" + $scope.achievementJson.mentorship.achievement.employees[0].employeeName +"'/>" + 
+                   "<h3>Achievement Type: </h3><input id='achievementType' type='text' class='form-control' value='" + $scope.achievementJson.mentorship.achievement.achievementType + "'/>" + 
+                   "<h3>Label: </h3><textarea id='lobName' class='form-control'>" + $scope.achievementJson.mentorship.achievement.lobName + "</textarea>" + 
+                   "<h3>Date: </h3><input type='date' id='achievementDate' class='form-control' value='" + $scope.achievementJson.mentorship.achievement.achievementDate + "'/>" +                     "<h3>Shared with: </h3><textarea class='form-control'>" +  $scope.splitEmployees( $scope.achievementJson.mentorship.achievement.employees) + "</textarea>" + 
+                   "<h3>Type of Mentorship: </h3><input type='text' id='typeMentorship' class='form-control' value='" + $scope.achievementJson.mentorship.typeOfMentorship + "'/>" + 
+                   "<h3>Area: </h3><input type='text' id='area' class='form-control' value='" + $scope.achievementJson.area + "'/>" + 
+                   "<h3>Description of Mentorship: </h3><input type='text' id='mentorShipDescription' class='form-control' value='" + $scope.achievementJson.mentorship.description + "'/>" + 
+                   "<h3>Brand: </h3><input type='text' id='brand' class='form-control' value='" + $scope.achievementJson.brand + "'/>" + 
+                   "<h3>Duration (in weeks): </h3><input type='text' id='duration' class='form-control' value='" + $scope.achievementJson.skillDuration + "'/>" + 
+                   "<h3>Comments: </h3><textarea id='comment' class='form-control'>" + $scope.achievementJson.mentorship.achievement.comment  + "</textarea><br>";
+               }
+        	   }catch(err){
                    result.innerHTML = 
                "<form>"+
                    "<h3>Employee Name: </h3><input type='text' class='form-control' disabled value='" + $scope.achievementJson.achievement.employees[0].employeeName +"'/>" + 
-                   "<h3>Achievement Type: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType + "'/>" + 
-                   "<h3>Label: </h3><textarea class='form-control'>" + $scope.achievementJson.achievement.lobName + "</textarea>" + 
-                   "<h3>Date: </h3><input type='date' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/>" +                     "<h3>Shared with: </h3><textarea class='form-control'>" + $scope.employeeSubmissions[i].shared + "</textarea>" + 
-                   "<h3>Type of Mentorship: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.typeOfMentorship + "'/>" + 
-                   "<h3>Area: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.area + "'/>" + 
-                   "<h3>Duration (in weeks): </h3><input type='text' class='form-control' value='" + $scope.achievementJson.duration + "'/>" + 
-                   "<h3>Comments: </h3><textarea class='form-control'>" + $scope.achievementJson.comment  + "</textarea><br>";
-               }
-               else{
-                   result.innerHTML = 
-               "<form>"+
-                   "<h3>Employee Name: </h3><input type='text' class='form-control' disabled value='" + $scope.achievementJson.achievement.employees[0].employeeName +"'/>" + 
-                   "<h3>Achievement Type: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType + "'/>" + 
-                   "<h3>Label: </h3><textarea class='form-control'>" + $scope.achievementJson.achievement.lobName + "</textarea>" + 
-                   "<h3>Date: </h3><input type='date' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/>" +                     "<h3>Shared with: </h3><textarea class='form-control'>" + $scope.employeeSubmissions[i].shared + "</textarea>" + 
-                   "<h3>Type of Mentorship: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.typeOfMentorship + "'/>" + 
-                   "<h3>Comments: </h3><textarea class='form-control'>" + $scope.achievementJson.comment  + "</textarea><br>";
+                   "<h3>Achievement Type: </h3><input id='achievementType' type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType + "'/>" + 
+                   "<h3>Label: </h3><textarea id='lobName' class='form-control'>" + $scope.achievementJson.achievement.lobName + "</textarea>" + 
+                   "<h3>Description of Mentorship: </h3><input type='text' id='mentorShipDescription' class='form-control' value='" + $scope.achievementJson.description + "'/>" + 
+                   "<h3>Date: </h3><input type='date' id='achievementDate' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/>" +                     "<h3>Shared with: </h3><textarea class='form-control'>" + $scope.splitEmployees( $scope.achievementJson.achievement.employees) + "</textarea>" + 
+                   "<h3>Type of Mentorship: </h3><input type='text' id='typeMentorship' class='form-control' value='" + $scope.achievementJson.typeOfMentorship + "'/>" + 
+                   "<h3>Comments: </h3><textarea id='comment' class='form-control'>" + $scope.achievementJson.achievement.comment  + "</textarea><br>";
                }
            }
-           else if($scope.achievementJson.achievement.achievementType == 'Success Stories'){
+           else if(achievementType == 'SuccessStories'){
                result.innerHTML = 
                "<form>"+
                    "<h3>Employee Name: </h3><input type='text' class='form-control' disabled value='" + $scope.achievementJson.achievement.employees[0].employeeName +"'/>" + 
-                   "<h3>Achievement Type: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType + "'/>" + 
-                   "<h3>Label: </h3><textarea class='form-control'>" + $scope.achievementJson.achievement.lobName + "</textarea>" + 
-                   "<h3>Date: </h3><input type='date' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/>" +                     "<h3>Shared with: </h3><textarea class='form-control'>" + $scope.employeeSubmissions[i].shared + "</textarea>" + 
-                   "<h3>Customer Name: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.customerName + "'/>" + 
-                   "<h3>Engagement Name: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.engagementName + "'/>" + 
-                   "<h3>Country: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.country + "'/>" + 
-                   "<h3>Business Unit: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.businessUnit + "'/>" +
-                   "<h3>Link to Success Story: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.linkToSuccessStory + "'/>" + 
-                   "<h3>Type: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.storyType + "'/>" + 
-                   "<h3>Comments: </h3><textarea class='form-control'>" + $scope.achievementJson.comment  + "</textarea><br>";
+                   "<h3>Achievement Type: </h3><input id='achievementType' type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType + "'/>" + 
+                   "<h3>Label: </h3><textarea id='lobName' class='form-control'>" + $scope.achievementJson.achievement.lobName + "</textarea>" + 
+                   "<h3>Date: </h3><input type='date' id='achievementDate' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/>" +                     "<h3>Shared with: </h3><textarea class='form-control'>" +  $scope.splitEmployees( $scope.achievementJson.achievement.employees) + "</textarea>" + 
+                   "<h3>Customer Name: </h3><input type='text' id='customerName' class='form-control' value='" + $scope.achievementJson.customerName + "'/>" + 
+                   "<h3>Engagement Name: </h3><input type='text' id='engagementName' class='form-control' value='" + $scope.achievementJson.engagementName + "'/>" + 
+                   "<h3>Country: </h3><input type='text' id='country' class='form-control' value='" + $scope.achievementJson.country + "'/>" + 
+                   "<h3>Business Unit: </h3><input type='text' id='businessUnit' class='form-control' value='" + $scope.achievementJson.busUnit + "'/>" +
+                   "<h3>Link to Success Story: </h3><input type='text'  id='linkTo' class='form-control' value='" + $scope.achievementJson.successStoryLink + "'/>" + 
+                   "<h3>Type: </h3><input type='text' id='type' class='form-control' value='" + $scope.achievementJson.type + "'/>" + 
+                   "<h3>Comments: </h3><textarea id='comment' class='form-control'>" + $scope.achievementJson.achievement.comment  + "</textarea><br>";
            }
-           
-             else if($scope.achievementJson.achievement.achievementType == 'Enablement'){
-                 if($scope.achievementJson.typeOfEnablement== 'Customer'){
+             else if(achievementType == 'Enablement'){
+            	 try{
+                 if($scope.achievementJson.enablement.typeOfEnablement== 'Customer'){
                result.innerHTML = 
                "<form>"+
-                   "<h3>Employee Name: </h3><input type='text' class='form-control' disabled value='" + $scope.achievementJson.achievement.employees[0].employeeName +"'/>" + 
-                   "<h3>Achievement Type: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType + "'/>" + 
-                   "<h3>Label: </h3><textarea class='form-control'>" + $scope.achievementJson.achievement.lobName + "</textarea>" + 
-                   "<h3>Date: </h3><input type='date' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/>" +                     "<h3>Shared with: </h3><textarea class='form-control'>" + $scope.employeeSubmissions[i].shared + "</textarea>" + 
-                   "<h3>Type of Enablement: </h3><input type='text' class='form-control' value='" + $scope.employeeSubmissions[i].typeOfEnablement + "'/>" + 
-                   "<h3>Title: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.title + "'/>" + 
-                   "<h3>Duration (in weeks): </h3><input type='text' class='form-control' value='" + $scope.achievementJson.duration + "'/>" + 
-                   "<h3>Number of Attendees: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.numberOfAttendees + "'/>" +
-                   "<h3>Business Unit: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.businessUnit + "'/>" + 
-                   "<h3>Customer Name: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.customerName + "'/>" + 
-                   "<h3>Customer Type: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.customerType + "'/>" + 
-                   "<h3>Event: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.event + "'/>" + 
-                   "<h3>Comments: </h3><textarea class='form-control'>" + $scope.achievementJson.comment  + "</textarea><br>";
+                   "<h3>Employee Name: </h3><input type='text' class='form-control' disabled value='" + $scope.achievementJson.enablement.achievement.employees[0].employeeName +"'/>" + 
+                   "<h3>Achievement Type: </h3><input id='achievementType' type='text' class='form-control' value='" + $scope.achievementJson.enablement.achievement.achievementType + "'/>" + 
+                   "<h3>Label: </h3><textarea id='lobName' class='form-control'>" + $scope.achievementJson.enablement.achievement.lobName + "</textarea>" + 
+                   "<h3>Date: </h3><input type='date' id='achievementDate' class='form-control' value='" + $scope.achievementJson.enablement.achievement.achievementDate + "'/>" +                     "<h3>Shared with: </h3><textarea class='form-control'>" +  $scope.splitEmployees( $scope.achievementJson.enablement.achievement.employees) + "</textarea>" + 
+                   "<h3>Type of Enablement: </h3><input id='typeOfEnablement' type='text' class='form-control' value='" + $scope.achievementJson.enablement.typeOfEnablement + "'/>" + 
+                   "<h3>Title: </h3><input type='text' id='title' class='form-control' value='" + $scope.achievementJson.enablement.title + "'/>" + 
+                   "<h3>Duration (in weeks): </h3><input id='duration' type='text' class='form-control' value='" + $scope.achievementJson.enablement.duration + "'/>" + 
+                   "<h3>Number of Attendees: </h3><input type='text' id='numOfAtendees' class='form-control' value='" + $scope.achievementJson.enablement.numberOfAttendants + "'/>" +
+                   "<h3>Business Unit: </h3><input type='text' id='businessUnit' class='form-control' value='" + $scope.achievementJson.enablement.busUnit + "'/>" + 
+                   "<h3>Customer Name: </h3><input type='text' id='customerName' class='form-control' value='" + $scope.achievementJson.customerName + "'/>" + 
+                   "<h3>Customer Type: </h3><input type='text' id='customerType' class='form-control' value='" + $scope.achievementJson.customerType + "'/>" + 
+                   "<h3>Event: </h3><input type='text' id='event' class='form-control' value='" + $scope.achievementJson.enablement.event + "'/>" + 
+                   "<h3>Comments: </h3><textarea id='comment' class='form-control'>" + $scope.achievementJson.enablement.achievement.comment  + "</textarea><br>";
            }
-                 else{
+            	 }catch(err){
                  result.innerHTML = 
                "<form>"+
                    "<h3>Employee Name: </h3><input type='text' class='form-control' disabled value='" + $scope.achievementJson.achievement.employees[0].employeeName +"'/>" + 
-                   "<h3>Achievement Type: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType+ "'/>" + 
-                   "<h3>Label: </h3><textarea class='form-control'>" + $scope.achievementJson.achievement.lobName + "</textarea>" + 
-                   "<h3>Date: </h3><input type='date' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/>" +                     "<h3>Shared with: </h3><textarea class='form-control'>" + $scope.employeeSubmissions[i].shared + "</textarea>" + 
-                   "<h3>Type of Enablement: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.typeOfEnablement + "'/>" + 
-                   "<h3>Title: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.title + "'/>" + 
-                   "<h3>Duration (in weeks): </h3><input type='text' class='form-control' value='" + $scope.achievementJson.duration + "'/>" + 
-                   "<h3>Number of Attendees: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.numberOfAttendees + "'/>" +
-                   "<h3>Business Unit: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.businessUnit + "'/>" + 
-                   "<h3>Event: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.event + "'/>" + 
-                   "<h3>Comments: </h3><textarea class='form-control'>" + $scope.achievementJson.comment  + "</textarea><br>";
+                   "<h3>Achievement Type: </h3><input id='achievementType' type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType+ "'/>" + 
+                   "<h3>Label: </h3><textarea id='lobName' class='form-control'>" + $scope.achievementJson.achievement.lobName + "</textarea>" + 
+                   "<h3>Date: </h3><input id='achievementDate' type='date' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/>" +                  
+                   "<h3>Shared with: </h3><textarea id='sharedWith' class='form-control'>" + $scope.splitEmployees( $scope.achievementJson.achievement.employees)+ "</textarea>" + 
+                   "<h3>Type of Enablement: </h3><input id='typeOfEnablement' id='typeOfEnablement' type='text' class='form-control' value='" + $scope.achievementJson.typeOfEnablement + "'/>" + 
+                   "<h3>Title: </h3><input type='text' id='title' class='form-control' value='" + $scope.achievementJson.title + "'/>" + 
+                   "<h3>Duration (in weeks): </h3><input id='duration' type='text' class='form-control' value='" + $scope.achievementJson.duration + "'/>" + 
+                   "<h3>Number of Attendees: </h3><input type='text' id='numOfAtendees' class='form-control' value='" + $scope.achievementJson.numberOfAttendants + "'/>" +
+                   "<h3>Business Unit: </h3><input type='text' id='businessUnit' class='form-control' value='" + $scope.achievementJson.busUnit + "'/>" + 
+                   "<h3>Event: </h3><input type='text' id='event' class='form-control' value='" + $scope.achievementJson.event + "'/>" + 
+                   "<h3>Comments: </h3><textarea id='comment' class='form-control'>" + $scope.achievementJson.achievement.comment  + "</textarea><br>";
                  }
              }
-           
-            else if($scope.achievementJson.achievement.achievementType == 'Certifications & Programs'){
-                if($scope.achievementJson.typeOfCertification == 'Product'){
+            else if(achievementType == 'CertificationsAndPrograms'){
+                if($scope.achievementJson.certificationsandprogram.typeOfCertification == 'Product'){
                result.innerHTML = 
                "<form>"+
-                   "<h3>Employee Name: </h3><input type='text' class='form-control' disabled value='" + $scope.achievementJson.achievement.employees[0].employeeName +"'/>" + 
-                   "<h3>Achievement Type: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType + "'/>" + 
-                   "<h3>Label: </h3><textarea class='form-control'>" + $scope.achievementJson.achievement.lobName + "</textarea>" + 
-                   "<h3>Date: </h3><input type='date' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/>" +                     "<h3>Shared with: </h3><textarea class='form-control'>" + $scope.employeeSubmissions[i].shared + "</textarea>" + 
-                   "<h3>Type of Certification: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.typeOfCertification + "'/>" + 
+                   "<h3>Employee Name: </h3><input type='text' class='form-control' disabled value='" + $scope.achievementJson.certificationsandprogram.achievement.employees[0].employeeName +"'/>" + 
+                   "<h3>Achievement Type: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.certificationsandprogram.achievement.achievementType + "'/>" + 
+                   "<h3>Label: </h3><textarea class='form-control'>" + $scope.achievementJson.certificationsandprogram.achievement.lobName + "</textarea>" + 
+                   "<h3>Date: </h3><input type='date' class='form-control' value='" + $scope.achievementJson.certificationsandprogram.achievement.achievementDate + "'/>" +                     "<h3>Shared with: </h3><textarea class='form-control'>" +  $scope.splitEmployees( $scope.achievementJson.certificationsandprogram.achievement.employees) + "</textarea>" + 
+                   "<h3>Type of Certification: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.certificationsandprogram.typeOfCertification + "'/>" + 
                    "<h3>Product Name: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.productName + "'/>" + 
-                   "<h3>Business Unit: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.businessUnit + "'/>" + 
+                   "<h3>Business Unit: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.busUnit + "'/>" + 
                    "<h3>Certification Exam: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.certificationExam + "'/>" +
-                   "<h3>Comments: </h3><textarea class='form-control'>" + $scope.achievementJson.comment  + "</textarea><br>";
+                   "<h3>Comments: </h3><textarea class='form-control'>" + $scope.achievementJson.certificationsandprogram.achievement.comment  + "</textarea><br>";
            }
-                else if($scope.employeeSubmissions[i].typeOfCertification == 'Professional'){
+                else if($scope.achievementJson.certificationsandprogram.typeOfCertification == 'Professional'){
                     result.innerHTML = 
                "<form>"+
-                   "<h3>Employee Name: </h3><input type='text' class='form-control' disabled value='" + $scope.achievementJson.achievement.employees[0].employeeName +"'/>" + 
-                   "<h3>Achievement Type: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType + "'/>" + 
-                   "<h3>Label: </h3><textarea class='form-control'>" + $scope.achievementJson.achievement.lobName + "</textarea>" + 
-                   "<h3>Date: </h3><input type='date' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/>" +                     
-                   "<h3>Shared with: </h3><textarea class='form-control'>" + $scope.employeeSubmissions[i].shared + "</textarea>" + 
-                   "<h3>Type of Certification: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.typeOfCertification + "'/>" + 
+                   "<h3>Employee Name: </h3><input type='text' class='form-control' disabled value='" + $scope.achievementJson.certificationsandprogram.achievement.employees[0].employeeName +"'/>" + 
+                   "<h3>Achievement Type: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.certificationsandprogram.achievement.achievementType + "'/>" + 
+                   "<h3>Label: </h3><textarea class='form-control'>" + $scope.achievementJson.certificationsandprogram.achievement.lobName + "</textarea>" + 
+                   "<h3>Date: </h3><input type='date' class='form-control' value='" + $scope.achievementJson.certificationsandprogram.achievement.achievementDate + "'/>" +                      "<h3>Shared with: </h3><textarea class='form-control'>" +   $scope.splitEmployees( $scope.achievementJson.certificationsandprogram.achievement.employees) + "</textarea>" + 
+                   "<h3>Type of Certification: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.certificationsandprogram.typeOfCertification + "'/>" + 
                    "<h3>Type: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.professionalType + "'/>" + 
-                   "<h3>Level: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.level + "'/>" + 
-                   
-                 
+                   "<h3>Level: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.professionalLevel + "'/>" + 
                    "<h3>Comments: </h3><textarea class='form-control'>" + $scope.achievementJson.comment  + "</textarea><br>";
                 }
                 else{
@@ -380,90 +405,219 @@ app.controller ("achievementsController",function ($scope,$http,submissions,Shar
                    "<h3>Employee Name: </h3><input type='text' class='form-control' disabled value='" + $scope.achievementJson.achievement.employees[0].employeeName +"'/>" + 
                    "<h3>Achievement Type: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType + "'/>" + 
                    "<h3>Label: </h3><textarea class='form-control'>" + $scope.achievementJson.achievement.lobName + "</textarea>" + 
-                   "<h3>Date: </h3><input type='date' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/>" +                     "<h3>Shared with: </h3><textarea class='form-control'>" + $scope.employeeSubmissions[i].shared + "</textarea>" + 
+                   "<h3>Date: </h3><input type='date' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/>" +                     "<h3>Shared with: </h3><textarea class='form-control'>" +  $scope.splitEmployees( $scope.achievementJson.achievement.employees) + "</textarea>" + 
                    "<h3>Type of Certification: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.typeOfCertification + "'/>" + 
-                   "<h3>Comments: </h3><textarea class='form-control'>" +$scope.achievementJson.comment  + "</textarea><br>";
+                   "<h3>Comments: </h3><textarea class='form-control'>" +$scope.achievementJson.achievement.comment  + "</textarea><br>";
                
                 }
             }
            
-            else if($scope.achievementJson.achievement.achievementType == 'Revenue Influence'){
+            else if(achievementType == 'RevenueInfluence'){
                result.innerHTML = 
                "<form>"+
                    "<h3>Employee Name: </h3><input type='text' class='form-control' disabled value='" +  $scope.achievementJson.achievement.employees[0].employeeName +"'/>" + 
-                   "<h3>Achievement Type: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType + "'/>" + 
-                   "<h3>Label: </h3><textarea class='form-control'>" + $scope.achievementJson.achievement.lobName + "</textarea>" + 
-                   "<h3>Date: </h3><input type='date' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/>" +                     "<h3>Shared with: </h3><textarea class='form-control'>" + $scope.employeeSubmissions[i].shared + "</textarea>" + 
-                   "<h3>Type: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.influenceType + "'/>" + 
-                   "<h3>Business Unit: </h3><input type='text' class='form-control' value='"  + $scope.achievementJson.achievement.businessUnit + "'/>" + 
-                   "<h3>Amount: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.amount + "'/>" + 
-                   "<h3>Description of Contribution: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.descriptionOfContribution + "'/>" +
-                   "<h3>Contribution Type: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.contributionType + "'/>" + 
-                   "<h3>Customer Name: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.customerName + "'/>" + 
-                   "<h3>Country: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.country + "'/>" + 
-                   "<h3>Engagement Name: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.engagementName + "'/>" + 
-                   "<h3>Comments: </h3><textarea class='form-control'>" +$scope.achievementJson.comment + "</textarea><br>";
+                   "<h3>Achievement Type: </h3><input id='achievementType' type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType + "'/>" + 
+                   "<h3>Label: </h3><textarea id='lobName' class='form-control'>" + $scope.achievementJson.achievement.lobName + "</textarea>" + 
+                   "<h3>Date: </h3><input id='achievementDate' type='date' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/>" +                     "<h3>Shared with: </h3><textarea class='form-control'>" + $scope.splitEmployees( $scope.achievementJson.achievement.employees) + "</textarea>" + 
+                   "<h3>Type: </h3><input type='text' id='type' class='form-control' value='" + $scope.achievementJson.revenueInfelunceType + "'/>" + 
+                   "<h3>Business Unit: </h3><input id='businessUnit' type='text' class='form-control' value='"  + $scope.achievementJson.businessUnits + "'/>" + 
+                   "<h3>Amount: </h3><input type='text' id='amount' class='form-control' value='" + $scope.achievementJson.amount + "'/>" + 
+                   "<h3>Brand: </h3><input type='text' id='brand' class='form-control' value='" + $scope.achievementJson.brand + "'/>" + 
+                   "<h3>Description of Contribution: </h3><input id='description' type='text' class='form-control' value='" + $scope.achievementJson.descriptionOfContribution + "'/>" +
+                   "<h3>Contribution Type: </h3><input type='text' id='contributionType' class='form-control' value='" + $scope.achievementJson.contributionType + "'/>" + 
+                   "<h3>Customer Name: </h3><input type='text' id='customerName' class='form-control' value='" + $scope.achievementJson.customerName + "'/>" + 
+                   "<h3>Country: </h3><input type='text' id='country' class='form-control' value='" + $scope.achievementJson.country + "'/>" + 
+                   "<h3>Engagement Name: </h3><input type='text' id='engagementName' class='form-control' value='" + $scope.achievementJson.engagementName + "'/>" + 
+                   "<h3>Comments: </h3><textarea id='comment' class='form-control'>" +$scope.achievementJson.achievement.comment + "</textarea><br>";
            }
-           
-           else if($scope.achievementJson.achievement.achievementType == 'Speaking/Organizing Events'){
-               if($scope.achievementJson.typeOfEvent == 'Speaker'){
+           else if(achievementType == 'SpeakingOrganizingEvent'){
+               if($scope.achievementJson.role == 'Speaker'){
                result.innerHTML = 
                "<form>"+
                    "<h3>Employee Name: </h3><input type='text' class='form-control' disabled value='" + $scope.achievementJson.achievement.employees[0].employeeName  +"'/>" + 
-                   "<h3>Achievement Type: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType + "'/>" + 
-                   "<h3>Label: </h3><textarea class='form-control'>" + $scope.achievementJson.achievement.lobName + "</textarea>" + 
-                   "<h3>Date: </h3><input type='date' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/>" +                   
-                   "<h3>Shared with: </h3><textarea class='form-control'>" + $scope.achievementJson.achievement.shared + "</textarea>" + 
-                   "<h3>Title of Event: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.titleOfEvent + "'/>" + 
-                   "<h3>Role: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.role + "'/>" + 
-                   "<h3>Country: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.country + "'/>" +
-                   "<h3>Business Unit: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.businessUnit + "'/>" +
-                   "<h3>Title of Conference: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.titleOfConference + "'/>" + 
-                   "<h3>Session: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.session + "'/>" + 
-                   "<h3>Internal or External: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.internalOrExternal + "'/>" + 
-                   "<h3>Type of Event: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.typeOfEvent + "'/>" + 
-                   "<h3>Comments: </h3><textarea class='form-control'>" +$scope.achievementJson.comment + "</textarea><br>";
+                   "<h3>Achievement Type: </h3><input id='achievementType' type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType + "'/>" + 
+                   "<h3>Label: </h3><textarea id='lobName' class='form-control'>" + $scope.achievementJson.achievement.lobName + "</textarea>" + 
+                   "<h3>Date: </h3><input type='date' id='achievementDate' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/>" +                   
+                   "<h3>Shared with: </h3><textarea id='sharedWith' class='form-control'>" + $scope.splitEmployees( $scope.achievementJson.achievement.employees) + "</textarea>" + 
+                   "<h3>Title of Event: </h3><input id='title' type='text' class='form-control' value='" + $scope.achievementJson.titleOfEvent + "'/>" + 
+                   "<h3>Role: </h3><input type='text' id='role' class='form-control' value='" + $scope.achievementJson.role + "'/>" + 
+                   "<h3>Country: </h3><input type='text' id='country' class='form-control' value='" + $scope.achievementJson.country + "'/>" +
+                   "<h3>Business Unit: </h3><input type='text' id='businessUnit' class='form-control' value='" + $scope.achievementJson.businessUnits + "'/>" +
+                   "<h3>Title of Conference: </h3><input id='titleOfConference' type='text' class='form-control' value='" + $scope.achievementJson.titleOfConference + "'/>" + 
+                   "<h3>Session: </h3><input type='text' id='session' class='form-control' value='" + $scope.achievementJson.session + "'/>" + 
+                   "<h3>Internal or External: </h3><input type='text' id='iOrE' class='form-control' value='" + $scope.achievementJson.sessionType + "'/>" + 
+                   "<h3>Type of Event: </h3><input type='text' id='typeOfEvent' class='form-control' value='" + $scope.achievementJson.typeOfEvent + "'/>" + 
+                   "<h3>Comments: </h3><textarea id='comment' class='form-control'>" +$scope.achievementJson.achievement.comment + "</textarea><br>";
            }
-               else{
+               else{ 
                    result.innerHTML = 
                "<form>"+
                    "<h3>Employee Name: </h3><input type='text' class='form-control' disabled value='" + $scope.achievementJson.achievement.employees[0].employeeName  +"'/>" + 
-                   "<h3>Achievement Type: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType + "'/>" + 
-                   "<h3>Label: </h3><textarea class='form-control'>" + $scope.achievementJson.achievement.lobName + "</textarea>" + 
-                   "<h3>Date: </h3><input type='date' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/>" +                     "<h3>Shared with: </h3><textarea class='form-control'>" + $scope.employeeSubmissions[i].shared + "</textarea>" + 
-                   "<h3>Title of Event: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.titleOfEvent + "'/>" + 
-                   "<h3>Role: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.role + "'/>" + 
-                   "<h3>Role of Organizer: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.roleOfOrganizer + "'/>" + 
-                   "<h3>Country: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.country + "'/>" + 
-                   "<h3>Business Unit: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.businessUnit + "'/>" +
-                   "<h3>Title of Conference: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.titleOfConference + "'/>" + 
-                   "<h3>Session: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.session + "'/>" + 
-                   "<h3>Internal or External: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.internalOrExternal + "'/>" + 
-                   "<h3>Type of Event: </h3><input type='text' class='form-control' value='" + $scope.achievementJson.achievement.typeOfEvent + "'/>" + 
-                   "<h3>Comments: </h3><textarea class='form-control'>" +$scope.achievementJson.comment + "</textarea><br>";
+                   "<h3>Achievement Type: </h3><input  id='achievementType' type='text' class='form-control' value='" + $scope.achievementJson.achievement.achievementType + "'/>" + 
+                   "<h3>Label: </h3><textarea id='lobName' class='form-control'>" + $scope.achievementJson.achievement.lobName + "</textarea>" + 
+                   "<h3>Date: </h3><input type='date' id='achievementDate' class='form-control' value='" + $scope.achievementJson.achievement.achievementDate + "'/>" +                    
+                   "<h3>Shared with: </h3><textarea id='sharedWith' class='form-control'>" +$scope.splitEmployees( $scope.achievementJson.achievement.employees) + "</textarea>" + 
+                   "<h3>Title of Event: </h3><input type='text' id='title' class='form-control' value='" + $scope.achievementJson.achievement.titleOfEvent + "'/>" + 
+                   "<h3>Role: </h3><input type='text' id='role' class='form-control' value='" + $scope.achievementJson.role + "'/>" +
+                   "<h3>Role of Organizer: </h3><input type='text' id='roleOfOrganizer' class='form-control' value='" + $scope.achievementJson.roleOfOrganizer + "'/>" + 
+                   "<h3>Country: </h3><input type='text' id='country' class='form-control' value='" + $scope.achievementJson.country + "'/>" + 
+                   "<h3>Business Unit: </h3><input type='text' id='businessUnit' class='form-control' value='" + $scope.achievementJson.businessUnits + "'/>" +
+                   "<h3>Title of Conference: </h3><input type='text' id='titleOfConference' class='form-control' value='" + $scope.achievementJson.titleOfConference + "'/>" + 
+                   "<h3>Session: </h3><input type='text' id='session' class='form-control' value='" + $scope.achievementJson.sessions + "'/>" + 
+                   "<h3>Internal or External: </h3><input type='text' id='iOrE' class='form-control' value='" + $scope.achievementJson.sessionType + "'/>" + 
+                   "<h3>Type of Event: </h3><input type='text' id='typeOfEvent' class='form-control' value='" + $scope.achievementJson.typeOfEvent + "'/>" + 
+                   "<h3>Comments: </h3><textarea id='comment' class='form-control'>" +$scope.achievementJson.achievement.comment + "</textarea><br>";
                }
            }
-           
            else{
            result.innerHTML = '';
           }
-       
+		  
+		   if(isManager){
           var managerFeedback = document.getElementById("managerFeedback");
           managerFeedback.innerHTML = "<h3>Manager's Feedback:</h3> <textarea class='form-control' placeholder='optional'></textarea><br><br>"
           
           var submitButton = document.getElementById("submitDiv");
-          submitButton.innerHTML = " <input type='submit' class='btn btn-success' style='margin-bottom: 30px; width:250px; margin-right:20px' value='Submit Changes & Accept'/> <input type='submit' class='btn btn-danger' style='margin-bottom: 30px; width:250px;' value='Reject'/></form>"
-          
+          submitButton.innerHTML = " <input type='submit'  ng-click='updateAchievement()' class='btn btn-success' style='margin-bottom: 30px; width:250px; margin-right:20px' value='Submit Changes & Accept'/> <input type='submit' class='btn btn-danger' style='margin-bottom: 30px; width:250px;' value='Reject'/></form>"
+		   }else{
+			   angular.element(document.getElementById('employeeSubmit')).append($compile('<a ng-click="updateAchievement()" class="btn btn-primary" style="margin-bottom: 30px;" value="Submit">Submit </a>')($scope));
+		   }
 		   
 	   });
-	   
-	   
-       
-        
-          
-           
-        
+    };
     
+   
+    
+    
+    $scope.updateAchievement = function(){
+    	
+    	var json = {} ; 
+    	var type= document.getElementById("achievementType").value;
+    	json["lobName"] = document.getElementById("lobName").value ;
+    	json["comment"]  = document.getElementById("comment").value ;
+    	json["date"] = document.getElementById("achievementDate").value  ; 
+    	json["employeeId"] = Shared.get("employeeId");
+    	json["achievementId"] = $scope.achievementId ; 
+    	json["status"] = "Returned"  ;
+    	if(type =="BoardReviews"){
+			 json["type"] = "BoardReviews" ;
+			 json["typeOfCertificate"] = document.getElementById("typeOfCertification").value;
+			 json["flag"] = document.getElementById("flag").value;
+			 json["reviewType"] = document.getElementById("reviewType").value;
+			 json["boardReviewLevel"] = document.getElementById("level").value;
+    	}else if (type=='Disclosure'){
+    		json["title"] = document.getElementById("achievementTitle").value ; 
+    		json["number"]  = document.getElementById("achievementNum").value ;  
+            json["type"] = "Disclosure" ; 
+    	}else if(type=="CustomerReferences"){
+    		json["type"] = "CustomerReferences" ;
+    		json["customerName"]=document.getElementById("customerName").value;
+    		json["country"]=document.getElementById("country").value;
+    		json["brand"]=document.getElementById("brand").value;
+    		json["busUnit"]=document.getElementById("businessUnit").value;
+    		json["engagementName"]=document.getElementById("engagementName").value;
+    	}else if(type=='CustomerSave'){
+    		json["type"] = "CustomerSave" ;
+    		json["brand"]=document.getElementById("brand").value;
+    		json['customerName'] = document.getElementById("customerName").value;
+    		json['country'] = document.getElementById("country").value;
+    		json['businessUnits'] = document.getElementById("businessUnit").value;
+    		json['employeeContribution'] = document.getElementById("employeeContribution").value;
+    		json['customerProblem'] = document.getElementById("customerProblem").value;
+    		json['engagementName'] = document.getElementById("engagementName").value;
+    	}else if(type=='SuccessStories'){
+    		json["type"] = "SuccessStories" ; 
+    		json["customerName"]=document.getElementById("customerName").value;
+    		json["engagementName"]=document.getElementById("engagementName").value;
+    		json["country"]=document.getElementById("country").value;
+    		json["busUnit"]=document.getElementById("businessUnit").value;
+    		json["successStoryLink"]=document.getElementById("linkTo").value;
+    		json["successStoriesType"]=document.getElementById("type").value;
+    	}else if(type=='RevenueInfluence'){
+    		json["type"] = "RevenueInfluence" ;
+   		json["revenueInfelunceType"] = document.getElementById("type").value ;
+   		json["businessUnits"] = document.getElementById("businessUnit").value;
+   		json["amount"] = document.getElementById("amount").value;
+   		json["descriptionOfContribution"] = document.getElementById("description").value;
+   		json["contributionType"] = document.getElementById("contributionType").value;
+   		json["customerName"] = document.getElementById("customerName").value;
+   		json["country"] = document.getElementById("country").value;
+   		json["engagementName"] = document.getElementById("engagementName").value;
+   		json["brand"] = document.getElementById("brand").value;
+   	}
+    	else if(type=='MentorShip'){
+		json['description'] =  document.getElementById("mentorShipDescription").value ;
+		json['type'] = "MentorShip" ;
+		try{
+			if($scope.achievementJson.mentorship.typeOfMentorship=='Skill'){
+				   json['typeOfMentorship'] =  "Skill";
+				   json['area'] = document.getElementById("area").value ;
+				   json['duration'] = document.getElementById("duration").value ;
+				   json['brand'] = document.getElementById("brand").value ;  
+			   }else if($scope.achievementJson.mentorship.typeOfMentorship=='Certification'){
+				   json['typeOfMentorship'] = "Certification";
+				   json['typeOfCertification'] = document.getElementById("typeCertification").value ;
+			   }
+		}catch(err){
+			 if($scope.achievementJson.typeOfMentorship=='Career'){
+				   json['typeOfMentorship'] =  "Career";
+			   }else if($scope.achievementJson.typeOfMentorship=='SummerInternship'){
+				   json['typeOfMentorship'] =  "SummerInternship";
+			   }
+		}
+	}
+    	
+    	else if(type=='HighImpactAsset'){
+    		json["type"] = "HighImpactAsset" ; 
+    		json['typeOfAsset'] =document.getElementById("typeOfAsset").value ;
+    		json["highImpactAssetName"] =document.getElementById("highImpactAssetName").value ;
+    		json["description"] =document.getElementById("description").value ;
+    		json["brand"] =document.getElementById("brand").value ;
+    		if(document.getElementById("typeOfAsset").value=='publication'){
+    			json["typeOfAsset2"] =document.getElementById("typeOfAsset2").value ; 
+    		}else if(document.getElementById("typeOfAsset").value=='material'){
+    			json["typeOfAsset2"] = document.getElementById("typeOfAsset2").value ;
+    		}else{
+    			json["typeOfAsset2"] = "null"
+    		}
+    	}
+    	
+    	else if(type=='Enablement'){
+    		json["type"] = "Enablement" ;
+    		json["typeOfEnablement"] = document.getElementById("typeOfEnablement").value ;
+    		json["title"] = document.getElementById("title").value;
+    		json["duration"] = document.getElementById("duration").value;
+    		json["numberOfAttendants"] = document.getElementById("numOfAtendees").value;
+    		json["busUnit"] = document.getElementById("businessUnit").value;
+    		json["event"] = document.getElementById("event").value;
+    		if( document.getElementById("typeOfEnablement").value=="Customer"){
+    			json["customerName"] =  document.getElementById("customerName").value;
+    			json["customerType"] =  document.getElementById("customerType").value;
+    		}
+    	}else if(type=='SpeakingOrganizingEvent'){
+    		json["type"] = "SpeakingOrganizingEvent" ; 
+    		json["titleOfEvent"] =document.getElementById("title").value; 
+    		json["role"] =  document.getElementById("role").value ;
+    		if(document.getElementById("role").value=="Speaker") json["roleOfOrganizer"] =  document.getElementById("roleOfOrganizer").value ;
+    		else json["roleOfOrganizer"] = "" ;  
+    		json["country"] =document.getElementById("country").value;
+    		json["businessUnits"] =document.getElementById("businessUnit").value;
+    		json["titleOfConference"] =document.getElementById("titleOfConference").value;
+    		json["session"] =document.getElementById("session").value;
+    		json["sessionType"] = document.getElementById("iOrE").value ;
+    		json["typeOfEvent"] = document.getElementById("typeOfEvent").value;
+    	}
+    	alert(JSON.stringify(json));
+    	
+    	$http({
+		      method:'POST',
+		      url:'http://localhost:9080/Achievements-App/Services/AchievementManipulation/EditAchievement', 
+		      params:{achievementJson:JSON.stringify(json)},
+		      headers:{
+		          'Content-type':'application/json'
+   }});
+    	
+    	
     };
     
    
@@ -499,7 +653,7 @@ app.controller ("achievementsController",function ($scope,$http,submissions,Shar
     		   json['typeOfCertification'] = document.getElementById("mentorshipCertificationType").value ;
     	   }
     	   
-    	}else if($scope.myDropDwon=="Board Reviews"){
+    	}else if($scope.myDropDown=="BoardReviews"){
 			
 			json["type"] = "BoardReviews" ;
 			 json["typeOfCertificate"] = $scope.BoardReviewsCertificationMenu;
@@ -508,7 +662,7 @@ app.controller ("achievementsController",function ($scope,$http,submissions,Shar
 			 json["boardReviewLevel"] = $scope.BoardReviewsLevelMenu;
 			 alert(JSON.stringify(json));
       	
-    	}else if($scope.myDropDown=="Certifications & Programs"){
+    	}else if($scope.myDropDown=="CertificationsAndPrograms"){
     		json["type"] = "CertificationsAndPrograms" ;
     		json["TypeOfCertification"] = $scope.CertificationProgramType ;
     		if($scope.CertificationProgramType=="Product"){
@@ -526,7 +680,7 @@ app.controller ("achievementsController",function ($scope,$http,submissions,Shar
     		json["title"] = document.getElementById("disclosureTitle").value ; 
     		json["number"]  = document.getElementById("disclosureNumber").value ;  
             json["type"] = "Disclosure" ; 
-    	}else if($scope.myDropDown=='Success Stories'){
+    	}else if($scope.myDropDown=='SuccessStories'){
     		json["type"] = "SuccessStories" ; 
     		json["customerName"]=document.getElementById("successStoriesCustomerName").value;
     		json["engagementName"]=document.getElementById("successStoriesEngagementName").value;
@@ -547,23 +701,23 @@ app.controller ("achievementsController",function ($scope,$http,submissions,Shar
     			json["customerName"] =  document.getElementById("EnablementCustomerName").value;
     			json["customerType"] =  $scope.CustomerType;
     		}
-    	}else if($scope.myDropDown=="Customer Reference"){
+    	}else if($scope.myDropDown=="CustomerReferences"){
     		json["type"] = "CustomerReferences" ;
     		json["customerName"]=document.getElementById("customerReferenceCustomerName").value;
     		json["country"]=document.getElementById("customerReferenceCountry").value;
     		json["brand"]=document.getElementById("customerReferenceBarnd").value;
     		json["busUnit"]=document.getElementById("customerReferenceBusUnit").value;
     		json["engagmentName"]=document.getElementById("customerReferenceEngagementName").value;
-    	}else if($scope.myDropDown=='Customer Saves'){
+    	}else if($scope.myDropDown=='CustomerSave'){
     		json["type"] = "CustomerSave" ;
     		json["brand"]=document.getElementById("customerSavesSkillBrand").value;
     		json['customerName'] = document.getElementById("customerSavesCustomerName").value;
     		json['country'] = document.getElementById("customerSavesCountry").value;
     		json['businessUnits'] = document.getElementById("customerSavesBusUnit").value;
     		json['employeeContribution'] = document.getElementById("customerSavesEmployeeContribution").value;
-    		json['CustomerProblem'] = document.getElementById("customerSavesCustomerProblem").value;
+    		json['customerProblem'] = document.getElementById("customerSavesCustomerProblem").value;
     		json['engagementName'] = document.getElementById("customerSavesEngagmentName").value;
-    	}else if($scope.myDropDown=='Revenue Influence'){
+    	}else if($scope.myDropDown=='RevenueInfluence'){
     		json["type"] = "RevenueInfluence" ;
     		 var radioType = document.getElementsByName("revenueInfelunceType") ;
     		json["revenueInfelunceType"] = radioType[0].checked ? radioType[0].value:(radioType[1].checked?radioType[1].value:radioType[2].value) ;
@@ -575,19 +729,20 @@ app.controller ("achievementsController",function ($scope,$http,submissions,Shar
     		json["country"] = document.getElementById("revenueInfluenceCountry").value;
     		json["engagementName"] = document.getElementById("revenueInfluenceEngagementName").value;
     		json["brand"] = document.getElementById("revenueInfluenceEngagementName").value;
-    	}else if($scope.myDropDown=='Speaking/Organizing Events'){
+    	}else if($scope.myDropDown=='SpeakingOrganizingEvent'){
     		json["type"] = "SpeakingOrganizingEvent" ; 
     		json["titleOfEvent"] =document.getElementById("SpeakingOrganizingTitleOfEvent").value; 
     		var radioType = document.getElementsByName("SpeakingOrganizingType") ;
-    		json["speakingOrganizingEventsType"] = radioType[0].checked ? radioType[0].value:(radioType[1].checked?radioType[1].value:radioType[2].value) ;
+    		json["role"] = radioType[0].checked ? radioType[0].value:(radioType[1].checked?radioType[1].value:radioType[2].value) ;
+    		json["roleOfOrganizer"] =  document.getElementById("SpeakingOrganizingRoleOfOrganizer").value; 
     		json["country"] =document.getElementById("SpeakingOrganizingCountry").value;
     		json["businessUnits"] =document.getElementById("SpeakingOrganizingBusinessUnits").value;
     		json["titleOfConference"] =document.getElementById("SpeakingOrganizingTitleofConference").value;
-    		json["sessions"] =document.getElementById("SpeakingOrganizingSession").value;
+    		json["session"] =document.getElementById("SpeakingOrganizingSession").value;
     		var sessionType = document.getElementsByName("SpeakingOrganizingIBM") ;
     		json["sessionType"] = sessionType[0].checked ? sessionType[0].value: sessionType[1].value;
     		json["typeOfEvent"] = document.getElementById("SpeakingOrganizingTypeOfEvent").value;
-    	}else if($scope.myDropDown=='High Impact Asset'){
+    	}else if($scope.myDropDown=='HighImpactAsset'){
     		json["type"] = "HighImpactAsset" ; 
     		json['typeOfAsset'] = $scope.assetDropDown ;
     		json["highImpactAssetName"] =document.getElementById("highImpactAssetName").value ;
@@ -608,6 +763,13 @@ app.controller ("achievementsController",function ($scope,$http,submissions,Shar
  		      headers:{
  		          'Content-type':'application/json'
      }});
+    	 
+    	 myRequests.getAchievementsByEmployeeId(Shared.get("employeeId")).success(function(request){ 
+    	        $scope.myReqData = request;
+    	         });
+    	 
+    	 
+    	 
     };
 	
 	
