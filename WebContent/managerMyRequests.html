@@ -10,7 +10,7 @@
                                 <a class="navbar-brand" id="navTitle" style="border-right: 1px solid white;"> IBM - Achievements <span class="glyphicon glyphicon-globe"> </span>  </a>
                            
                             <a href="#/managerMyRequests" class="navbar-brand" style="float: right; margin-right: 8px;" >My Requests</a>
-                            <a href="#/managerSubmissions" class="navbar-brand" style="float: right;  margin-right: 8px;" >Submissions</a>
+                            <a href="#/managerSubmissions" class="navbar-brand" style="float: right;  margin-right: 8px;" >Employees Requests</a>
                             <a href="#/managerReports" class="navbar-brand" style="float: right;   margin-right: 8px;" >Reports</a>
                         </div>
                     </div>        
@@ -22,7 +22,6 @@
     <div style="width:auto; float: left;">
         <h1>Reserved for Manager View!</h1><br><br><br><br><br>
         <div id="resultDiv"></div>
-         <div id="employeeSubmit"></div>
         <div class="panel panel-default ">
             
             <table class="table table-striped text-center" style="width:900px;">
@@ -36,7 +35,7 @@
                     <th class="text-center" Style="width:auto;">Status
                     </th>
                 </tr>
-                <tr ng-repeat="ReqData in myReqData">
+                <tr  ng-repeat="ReqData in myReqData">
                     <td>{{ReqData.achievementType}}</td>
                     <td>{{ReqData.lobName}}</td>
                     <td>{{ReqData.achievementDate}}</td>
@@ -69,6 +68,13 @@
                     </td>
                     
                 </tr>
+                <tr ng-show="!myReqData.length">
+            <td class="text-center" Style="width:auto;"></td>
+            <td class="text-center" Style="width:auto;">No Content</td>
+            <td class="text-center" Style="width:auto;"></td>
+            <td class="text-center" Style="width:auto;"></td>
+            </tr>
+                
             </table>
         </div>
     </div>

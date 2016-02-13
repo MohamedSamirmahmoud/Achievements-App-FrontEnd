@@ -10,7 +10,7 @@
                                 <a class="navbar-brand" id="navTitle" style="border-right: 1px solid white;"> IBM - Achievements <span class="glyphicon glyphicon-globe"> </span>  </a>
                                   
                             <a href="#/managerMyRequests" class="navbar-brand" style="float: right;  margin-right: 8px;" >My Requests</a>
-                            <a href="#/managerSubmissions" class="navbar-brand" style="float: right;  margin-right: 8px;" >Submissions</a>
+                            <a href="#/managerSubmissions" class="navbar-brand" style="float: right;  margin-right: 8px;" >Employees Requests</a>
                             <a href="#/managerReports" class="navbar-brand" style="float: right; margin-right: 8px;" >Reports</a>
                         </div>
                     </div>        
@@ -28,7 +28,7 @@
                 <option value="IDplusStatus"  ng-model="searchFor">Employee ID & Status</option>
                 <option value="Date"  ng-model="searchFor">Date</option>
                 <option value="AchievementType"  ng-model="searchFor">Achievement Type</option>
-                <option value="Brand"  ng-model="searchFor">Brand</option>
+                <option value="BusinessUnits"  ng-model="searchFor">Business Units</option>
             </select>
             <br />
             <br />
@@ -40,12 +40,12 @@
             <div class="input-group">
                  <div class="input-group-addon"><i class="fa fa-search"></i></div>
 
-                    <input type="text" class="form-control" placeholder="Search by EmployeeID" ng-model="searchID">
+                    <input type="number" class="form-control" placeholder="Search by EmployeeID" ng-model="searchID">
                     
 
       </div>
             <br>
-      <button ng-click="searchID=''">Clear</button>
+      <button ng-click="getAchievementsByEmployeeId(searchID)">getAchievements</button>
     </div>
         
         
@@ -99,43 +99,46 @@
          
           <div ng-show="dateDropDown=='Quarter'">
            <h3 style="font-family: fantasy;">Year:</h3>
-              <select ng-model="yearDropDown">
+              <select id="yearDate" ng-model="yearDropDown">
              
-               <option ng-repeat="n in range()" ng-selected="true">{{n}}</option>
+               <option ng-repeat="n in range()" ng-selected="true" value="{{n}}">{{n}}</option>
               </select>
+              
              <h3 style="font-family: fantasy;">Quarter:</h3> 
-              <select ng-model="quarterDropDown">
-             
-              <option ng-model="quarterDropDown" ng-selected="true"> 1</option>
-              <option ng-model="quarterDropDown"> 2</option>
-              <option ng-model="quarterDropDown"> 3</option>
-              <option ng-model="quarterDropDown"> 4</option>
+             <select id="quarterDate" ng-model="quarterDropDown">
+              <option  ng-selected="true" value="1"> 1</option>
+              <option  value="2"> 2</option>
+              <option  value="3"> 3</option>
+              <option  value="4"> 4</option>
               </select>
+              <button ng-click="getAchievementsByQuarter()">Get Achivements</button>
                 </div>
+                
            <div ng-show="dateDropDown=='Month'">
            <h3 style="font-family: fantasy;">Year:</h3>
-              <select ng-model="yearDropDown">
+              <select id="yearDate" ng-model="yearDropDown">
              
-               <option ng-repeat="n in range()" ng-selected="true">{{n}}</option>
+               <option ng-repeat="n in range()" ng-selected="true" value="{{n}}">{{n}}</option>
               </select>
               
               
               <h3 style="font-family: fantasy;"> Month:</h3>
-              <select ng-model="monthDropDown">
+              <select id="monthDate" ng-model="monthDropDown">
               
-              <option ng-model="monthDropDown" ng-selected="true"> 1</option>
-              <option ng-model="monthDropDown"> 2</option>
-              <option ng-model="monthDropDown"> 3</option>
-              <option ng-model="monthDropDown"> 4</option>
-              <option ng-model="monthDropDown"> 5</option>
-              <option ng-model="monthDropDown"> 6</option>
-              <option ng-model="monthDropDown"> 7</option>
-              <option ng-model="monthDropDown"> 8</option>
-              <option ng-model="monthDropDown"> 9</option>
-              <option ng-model="monthDropDown"> 10</option>
-              <option ng-model="monthDropDown"> 11</option>
-              <option ng-model="monthDropDown"> 12</option>
+              <option ng-model="monthDropDown" ng-selected="true" value="01"> 1</option>
+              <option ng-model="monthDropDown" value="02"> 2</option>
+              <option ng-model="monthDropDown" value="03"> 3</option>
+              <option ng-model="monthDropDown" value="04" > 4</option>
+              <option ng-model="monthDropDown" value="05" > 5</option>
+              <option ng-model="monthDropDown" value="06" > 6</option>
+              <option ng-model="monthDropDown" value="07"> 7</option>
+              <option ng-model="monthDropDown" value="08"> 8</option>
+              <option ng-model="monthDropDown" value="09"> 9</option>
+              <option ng-model="monthDropDown" value="10"> 10</option>
+              <option ng-model="monthDropDown" value="11"> 11</option>
+              <option ng-model="monthDropDown" value="12"> 12</option>
               </select>
+              <button ng-click="getAchievementsByMonth()">Get Achivements</button>
                 </div>      
                 
                </div>
@@ -154,11 +157,11 @@
                    </div>
                 
             </div>
+            
             <div>    
                 
-        <div class="form-group" ng-show="searchFor=='Brand'">
-             <strong>Search By Brand</strong> <br>
-            
+        <div class="form-group" ng-show="searchFor=='BusinessUnits'">
+             <strong>Search By Business Units</strong> <br>
                 <select class="form-control" ng-model="searchBrand" > 
                 <option value="Analytics"  ng-model="searchBrand" >Analytics</option>
                 <option value="Cloud"  ng-model="searchBrand" >Cloud</option>
@@ -178,8 +181,6 @@
 
  <table class="table table-striped text-center" style="width:900px;">
                 <tr>
-                <th class="text-center" Style="width:auto;">Employee ID
-                    </th>
                     <th class="text-center" Style="width:auto;">Employee Name
                     </th>
                     <th class="text-center" Style="width:auto;">Achievement Type
@@ -191,9 +192,8 @@
                      <th class="text-center" Style="width:auto;">Status
                     </th>
                 </tr>
-                <tr ng-repeat="ReqData in myReqData | filter:{achievementId:searchID}">
-                    <td> {{ReqData.achievementId}}</td>
-                    <td>{{RedData.employeeName}}</td>
+                <tr ng-repeat="ReqData in myReqData">
+                    <td>{{getFirstEmployee(ReqData.employees)}}</td>
                     <td>{{ReqData.achievementType}}</td>
                     <td>{{ReqData.lobName}}</td>
                     <td>{{ReqData.achievementDate}}</td>
@@ -246,7 +246,7 @@
                     </th>
                 </tr>
                 <tr ng-repeat="ReqData in myReqDataStatus">
-                    <td>{{firstEmployeeName}}</td>
+                    <td>{{getFirstEmployee(ReqData.employees)}}</td>
                     <td>{{ReqData.achievementType}}</td>
                     <td>{{ReqData.lobName}}</td>
                     <td>{{ReqData.achievementDate}}</td>
@@ -299,7 +299,7 @@
                     </th>
                 </tr>
                 <tr ng-repeat="ReqData in myReqDataType ">
-                    <td>{{RedData.employeeName}}</td>
+                    <td>{{getFirstEmployee(ReqData.employees)}}</td>
                     <td>{{ReqData.achievementType}}</td>
                     <td>{{ReqData.lobName}}</td>
                     <td>{{ReqData.achievementDate}}</td>
@@ -335,12 +335,10 @@
             </table>
         </div>
         
-         <div ng-show="searchFor=='Brand'">
+         <div ng-show="searchFor=='BusinessUnits'">
    
  <table class="table table-striped text-center" style="width:900px;">
                 <tr>
-                <th class="text-center" Style="width:auto;">Employee Id
-                    </th>
                     <th class="text-center" Style="width:auto;">Employee Name
                     </th>
                     <th class="text-center" Style="width:auto;">Achievement Type
@@ -354,8 +352,7 @@
                    
                 </tr>
                 <tr ng-repeat="ReqData in myReqData |filter:searchBrand">
-                    <td> {{ReqData.employeeId}}</td>
-                    <td>{{RedData.employeeName}}</td>
+                    <td>{{getFirstEmployee(ReqData.employees)}}</td>
                     <td>{{ReqData.achievementType}}</td>
                     <td>{{ReqData.lobName}}</td>
                     <td>{{ReqData.achievementDate}}</td>
@@ -398,8 +395,6 @@
    
  <table class="table table-striped text-center" style="width:900px;">
                 <tr>
-                <th class="text-center" Style="width:auto;">Employee ID
-                    </th>
                     <th class="text-center" Style="width:auto;">Employee Name
                     </th>
                     <th class="text-center" Style="width:auto;">Achievement Type
@@ -412,8 +407,7 @@
                     </th>
                 </tr>
                 <tr ng-repeat="ReqData in myReqData |filter:{achievementId:searchID}|filter:{status:searchStatus}">
-                    <td> {{ReqData.achievementId}}</td>
-                    <td>{{RedData.employeeName}}</td>
+                    <td>{{getFirstEmployee(ReqData.employees)}}</td>
                     <td>{{ReqData.achievementType}}</td>
                     <td>{{ReqData.lobName}}</td>
                     <td>{{ReqData.achievementDate}}</td>
@@ -454,8 +448,6 @@
    
  <table class="table table-striped text-center" style="width:900px;">
                 <tr>
-                <th class="text-center" Style="width:auto;">Employee ID
-                    </th>
                     <th class="text-center" Style="width:auto;">Employee Name
                     </th>
                     <th class="text-center" Style="width:auto;">Achievement Type
@@ -468,8 +460,7 @@
                     </th>
                 </tr>
                 <tr ng-repeat="ReqData in myReqData ">
-                    <td> {{ReqData.achievementId}}</td>
-                    <td>{{RedData.employeeName}}</td>
+                    <td>{{getFirstEmployee(ReqData.employees)}}</td>
                     <td>{{ReqData.achievementType}}</td>
                     <td>{{ReqData.lobName}}</td>
                     <td>{{ReqData.achievementDate | date : 'MM/dd/yyyy'}}</td>

@@ -19,7 +19,6 @@
     <div style="width:auto; float: left;">
          <h1>Reserved for Employee View!</h1><br><br><br><br><br>
          <div id="resultDiv"></div>
-         <div id="employeeSubmit"></div>
         <div class="panel panel-default ">
             <table class="table table-striped text-center" style="width:900px;">
                 <tr>
@@ -64,6 +63,12 @@
                         </div> 
                     </td>
                 </tr>
+                 <tr ng-show="!myReqData.length">
+            <td class="text-center" Style="width:auto;"></td>
+            <td class="text-center" Style="width:auto;">No Content</td>
+            <td class="text-center" Style="width:auto;"></td>
+            <td class="text-center" Style="width:auto;"></td>
+            </tr>
             </table>
         </div>
     </div>

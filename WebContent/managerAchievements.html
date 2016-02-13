@@ -10,7 +10,7 @@
                                 <a class="navbar-brand" id="navTitle" style="border-right: 1px solid white;"> IBM - Achievements <span class="glyphicon glyphicon-globe"> </span>  </a>
                            
                             <a href="#/managerMyRequests" class="navbar-brand" style="float: right; margin-right: 8px;" >My Requests</a>
-                            <a href="#/managerSubmissions" class="navbar-brand" style="float: right;  margin-right: 8px;" >Submissions</a>
+                            <a href="#/managerSubmissions" class="navbar-brand" style="float: right;  margin-right: 8px;" >Employees Requests</a>
                             <a href="#/managerReports" class="navbar-brand" style="float: right;   margin-right: 8px;" >Reports</a>
                         </div>
                     </div>        
@@ -39,8 +39,6 @@
         <!-- Common -->
         <div ng-show="!myDropDown==''">
             <form>
-                Employee Name:
-                <input id="employeeSharedWithName" type="text" class="form-control"><br>
 				  <!--
 
 -->
@@ -63,7 +61,7 @@
              
       
      <div ng-repeat="shared in users | filter:search" for="{{shared.employeeMai}}">
-    <input type="checkbox" value="shared.employeeMail" name="employeeList[]"/>
+    <input type="checkbox" value="{{shared.employeeId}}" name="employeeList[]"/>
       {{shared.employeeMail}}
      
     </div>
@@ -71,8 +69,7 @@
    
           </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-             <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
         </div>
       </div>
       
@@ -118,12 +115,24 @@
                  
 				</div>-->
 			<br> 
-              
                 <br>
                 Date:
-                <input id="achievementDate" type="date" class="form-control"><br>
+                <input id="achievementDate" type="date" class="form-control" placeholder="mm/dd/yyyy"><br>
                 Lob Name: 
                 <input id="lobName" type="text" class="form-control"><br>
+                Business Units: 
+                  <select id="busUnits" ng-model="BoardReviewsCertificationMenu" class="form-control">
+                  <option value="Global Business Services">Global Business Services</option>
+                  <option value="Global Technology ">Global Technology </option>
+                  <option value="Services">Services</option>
+                  <option value="IBM Analytics">IBM Analytics</option>
+                  <option value="IBM Cloud">IBM Cloud</option>
+                  <option value="IBM Commerce">IBM Commerce</option>
+                  <option value="IBM Security">IBM Security</option>
+                  <option value="IBM Systems">IBM Systems</option>
+                  <option value="IBM Watson">IBM Watson</option>
+                  <option value="Research">Research</option>
+        </select>
                 
             </form>
         </div>
@@ -134,13 +143,6 @@
                 <input id="disclosureTitle" type="text" class="form-control"><br>
                 Number:
                 <input id="disclosureNumber" type="text" class="form-control"><br>
-                
-                Status: 
-                <select id="disclosureStatus" class="form-control">
-                    <option value="submitted">Submitted</option>
-                    <option value="filed">Filed</option>
-                    <option value="issued">Issued</option>
-                </select>
             </form>
         </div>
         
@@ -191,7 +193,7 @@
 		-->
         </div>
 
-        <div ng-show="myDropDown=='CustomerReference'">
+        <div ng-show="myDropDown=='CustomerReferences'">
             Customer Name:
             <br>
             <input id="customerReferenceCustomerName"   type="text" class="form-control"><br>
@@ -744,7 +746,7 @@
              <input id="customerSavesSkillBrand" type="text" class="form-control"><br>
         </div>
 
-        <div ng-show="myDropDown=='FeedbackToDevelopment'">
+  <div ng-show="myDropDown=='FeedbackToDevelopment'">
             <form>
                         Type of Feedback :<br>
                         <select ng-model="feedbackMenu" class="form-control">
@@ -757,20 +759,20 @@
                     <!-- if defect  -->
                     <div ng-show="feedbackMenu=='defect'">
                         PMR Number: 
-                        <input type="number" class="form-control">
+                        <input id="feedBackPMR" type="number" class="form-control">
                     </div>
                 <br>
                 <div class="row">
                     <div class="col-md-6" style="padding-left: 0px;">
                         Business Units :
-                        <select class="form-control">
+                        <select id="feedBackBusinessUnits" class="form-control">
                             <option selected></option>
                             <option ng-repeat="AchievementsData in myAchievementsData.BusinessUnits" value="{{AchievementsData.name}}">{{AchievementsData.name}}</option>
                         </select>
                     </div>
                     <div class="col-md-6" style="padding-right: 0px;">
                         Product :
-                        <input type="text" class="form-control">
+                        <input id="feedBackProuduct" type="text" class="form-control">
                     </div>
                 </div>
             </form>
@@ -1209,16 +1211,8 @@
                     Product Name: 
                     <input id="CertificationProgramProductName"  type="Text" class="form-control" name="ProductName">
                     <br>
-                    Business Units:
-                    <select id="CertificationProgramBusinessUnits"  class="form-control">
-                        <option selected></option>
-                        <option ng-repeat="AchievementsData in myAchievementsData.BusinessUnits" value="{{AchievementsData.name}}">{{AchievementsData.name}}</option>
-                    </select>
-                    <br>
-                    Brand :
-                    <br>
-                      <input id="CertificationProgramBrand"  type="text" class="form-control">
-                       <br>
+                   
+                    
                     Certification Exam:
                     <input id="CertificationProgramCertificationExam"  type="Text" class="form-control" name="CertificationExam">
                     <br>
@@ -1847,51 +1841,10 @@
         <div ng-show="!myDropDown==''">
 			Comments:
             <textarea id="comment" class="form-control"></textarea><br>
-            <a href="#/managerMyRequests" ng-click="addAchievement()" class="btn btn-primary" style="margin-bottom: 30px;" value="Submit">Submit </a>
+            <a  ng-click="addAchievement(true)" class="btn btn-primary" style="margin-bottom: 30px;" value="Submit">Submit </a>
         </div>
         
     </div>
-	
-	
-	<!-- // =============================================== Updated ===================================== // -->
-	 
-		<div class="container table-responsive" ng-show="myDropDown=='Disclosure'">	
-			<table class="table table-striped text-center " style="width:900px;">
-                <tr>
-                    <th class="text-center" Style="width:auto;">Employee Name
-                    </th>
-                    <th class="text-center" Style="width:auto;">Shared with someone? 
-                    </th>
-                    
-                    <th class="text-center" Style="width:auto;">Comments
-                    </th>
-					<th class="text-center" Style="width:auto;">Date
-                    </th>
-					<th class="text-center" Style="width:auto;">Title
-                    </th>
-					<th class="text-center" Style="width:auto;">Number
-                    </th>
-					<th class="text-center" Style="width:auto;">Status
-                    </th>
-                </tr>
-                <tr ng-repeat="disclosure in Mydisclosure">
-                    <td>{{disclosure.name}}</td>
-                    <td>{{disclosure.shared}}</td>
-                  
-                    <td>{{disclosure.comments}}</td>
-                    <td>{{disclosure.date}}</td>
-                    <td>{{disclosure.title}}</td>
-                    <td>{{disclosure.number}}</td>
-                    <td>{{disclosure.status}}</td>
-                   
-                 
-                    
-                    
-                    
-                </tr>
-            </table>
-		</div>
-	 
    
 </div>
 

@@ -48,6 +48,27 @@ app.factory('submissions', function($http) {
 		  });
 	   
    };
+   services.getAchievementByQuarter = function(quarter , year , managerId){
+	   return $http({
+		      method:'POST',
+		      url:'http://localhost:9080/Achievements-App/Services/AchievementQuerying/getAchievementByQuarter', 
+		      params:{'year' : year , 'quarter' : quarter , 'managerId' : managerId},
+		      headers:{
+		          'Content-stype':'application/json'
+		      }       
+		  });  
+   };
+   
+   services.getAchievementsByMonth = function(month , year , managerId){
+	   return $http({
+		      method:'POST',
+		      url:'http://localhost:9080/Achievements-App/Services/AchievementQuerying/getAchievementByMonth', 
+		      params:{'year' : year , 'month' : month , 'managerId' : managerId},
+		      headers:{
+		          'Content-stype':'application/json'
+		      }       
+		  });  
+   };
    return services ;
 });
 
@@ -96,6 +117,7 @@ app.factory('myRequestsByBrand', function($http) {
 	}
 	   return services;
 });
+
 
 
 

@@ -10,7 +10,7 @@
                                 <a class="navbar-brand" id="navTitle" style="border-right: 1px solid white;"> IBM - Achievements <span class="glyphicon glyphicon-globe"> </span>  </a>
                                   
                             <a href="#/managerMyRequests" class="navbar-brand" style="float: right; margin-right: 8px;" >My Requests</a>
-                            <a href="#/managerSubmissions" class="navbar-brand" style="float: right;  margin-right: 8px;" >Submissions</a>
+                            <a href="#/managerSubmissions" class="navbar-brand" style="float: right;  margin-right: 8px;" >Employees Requests</a>
                             <a href="#/managerReports" class="navbar-brand" style="float: right; margin-right: 8px;" >Reports</a>
                         </div>
                     </div>        
@@ -19,7 +19,7 @@
     
     
     <div style="width:auto; float: left;">
-        <h1>Reserved for Manager Submissions!</h1><br><br><br><br><br>
+        <h1>Reserved for Manager Employees Requests!</h1><br><br><br><br><br>
           <div id="resultDiv"></div>
         <div id="managerFeedback"></div>
          <div id="submitDiv"></div>
@@ -39,13 +39,21 @@
                     <th class="text-center" Style="width:auto;">Date
                     </th>
                 </tr>
-                <tr ng-repeat="subms in employeeSubmissions | orderBy:'date':true">
+                <tr ng-repeat="subms in employeeSubmissions">
                     <td><a id="{{subms.achievementId}}" ng-click="showAchievements(subms.achievementId , subms.achievementType , true)"><span class="glyphicon glyphicon-edit"></span>  </a></td>
-                    <td>{{subms.employees[0].employeeName}}</td>
+                    <td>{{getFirstEmployee(subms.employees)}}</td>
                     <td>{{subms.achievementType}}</td>
                     <td>{{subms.lobName}}</td>
                     <td>{{subms.achievementDate}}</td>
                 </tr>
+                
+             <tr ng-show="!employeeSubmissions.length">
+            <td class="text-center" Style="width:auto;"></td>
+            <td class="text-center" Style="width:auto;"></td>
+            <td class="text-center" Style="width:auto;">No Content</td>
+            <td class="text-center" Style="width:auto;"></td>
+            <td class="text-center" Style="width:auto;"></td>
+            </tr>
             </table>
             
           
